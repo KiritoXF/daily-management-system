@@ -7,7 +7,7 @@
 
 ## 介绍
 
-[English version](./readme_en.md)
+[English version](./readme_EN.md)
 
 
 ## 使用
