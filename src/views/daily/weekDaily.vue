@@ -92,12 +92,11 @@ export default {
       })
       .then(data => {
         const infos = data.body[0];
-        const params = infos;
-        if (params == null) {
+        if (infos == null) {
           return;
         }
-        this.updateFlag = params.updateFlag;
-        this.weekData = JSON.parse(params.weekData);
+        this.updateFlag = infos.updateFlag;
+        this.weekData = JSON.parse(infos.weekData);
         this.weekData.monday.date = new Date(this.weekData.monday.date);
         this.weekData.tuesday.date = new Date(this.weekData.tuesday.date);
         this.weekData.wednesday.date = new Date(this.weekData.wednesday.date);
@@ -105,12 +104,12 @@ export default {
         this.weekData.friday.date = new Date(this.weekData.friday.date);
         this.weekData.saturday.date = new Date(this.weekData.saturday.date);
         this.weekData.sunday.date = new Date(this.weekData.sunday.date);
-        this.timeInterval = params.timeInterval.split("-").map(item => {
+        this.timeInterval = infos.timeInterval.split("-").map(item => {
           return (
             item.slice(0, 4) + "-" + item.slice(4, 6) + "-" + item.slice(6, 8)
           );
         });
-        this.weekNumber = params.weeks;
+        this.weekNumber = infos.weeks;
       });
   },
   computed: {

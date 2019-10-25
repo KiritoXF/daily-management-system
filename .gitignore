@@ -11,3 +11,5 @@ src/config/env.js
 /index_prod.html
 /views/addDaily.vue
 /views/dailyList.vue
+README.md 
+readme_EN.md

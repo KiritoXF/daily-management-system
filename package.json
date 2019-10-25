@@ -9,18 +9,14 @@
     "build": "webpack --progress --hide-modules --config webpack.prod.config.js",
     "server": "nodemon ./server/index"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/iview/iview-project.git"
-  },
   "author": "kiritoXF",
   "license": "MIT",
   "dependencies": {
     "chart.js": "^2.8.0",
     "echarts": "^4.2.1",
     "express": "^4.17.1",
-    "iview": "^3.5.0",
     "mysql": "^2.17.1",
+    "view-design": "^4.0.2",
     "vue": "^2.6.10",
     "vue-chart.js": "^0.2.0",
     "vue-chartjs": "^3.4.2",

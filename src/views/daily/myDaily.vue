@@ -29,7 +29,9 @@
           </template>
         </Table>
       </TabPane>
-      <TabPane label="加班记录表">以后再做</TabPane>
+      <TabPane label="加班记录表">
+        <overtime></overtime>
+      </TabPane>
       <TabPane label="各种类工作时长">
         <div id="workloadCategoryChart" class="echart-div"></div>
       </TabPane>
@@ -59,6 +61,7 @@
 </style>
 <script>
 import buildEChart from "../../js/chart/buildEChart";
+import overtime from "./overtime";
 import XLSX from "xlsx";
 
 export default {
@@ -66,6 +69,9 @@ export default {
     // 给input添加导入文件的功能，监听文件的变化
     this.importCSV();
     this.getAllInfos();
+  },
+  components: {
+    overtime
   },
   data() {
     return {
@@ -152,7 +158,7 @@ export default {
       });
     },
     // 导出原始数据
-    // TODO: weekData will be separated to parts cause default separator is ','
+    // ~~TODO~~: weekData will be separated to parts cause default separator is ','
     // fixed by: add "" and use escape
     exportFullData() {
       const columns = this.columns
@@ -239,7 +245,7 @@ export default {
       this.$router.push({
         name: "weekDaily",
         query: {
-          weekNum: this.infos[index].weeks 
+          weekNum: this.infos[index].weeks
         }
       });
     },

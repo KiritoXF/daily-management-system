@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import iView from 'iview';
+import iView from 'view-design';
 import VueRouter from 'vue-router';
 import Routers from './router';
 import Util from './libs/util';
@@ -8,7 +8,7 @@ import VueResource from 'vue-resource';
 import Chart from 'vue-chartjs';
 import EChart from 'echarts';
 // import VueI18n from 'vue-i18n'
-import 'iview/dist/styles/iview.css';
+import 'view-design/dist/styles/iview.css';
 
 // vue 拖拽插件
 import {

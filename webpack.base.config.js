@@ -55,7 +55,7 @@ module.exports = {
                 ]
             },
             {
-                test: /iview\/.*?js$/,
+                test: /view-design\/.*?js$/,
                 loader: 'babel-loader'
             },
             {
