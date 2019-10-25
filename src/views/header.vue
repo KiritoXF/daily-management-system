@@ -23,6 +23,11 @@
             <Icon type="md-alarm"></Icon>Todos(设计中)
           </MenuItem>
         </router-link>
+        <router-link to="/adventure">
+          <MenuItem name="company">
+            <Icon type=""></Icon>Adventure
+          </MenuItem>
+        </router-link>
         <router-link to="/setting">
           <MenuItem name="setting">
             <Icon type="md-settings"></Icon>设置

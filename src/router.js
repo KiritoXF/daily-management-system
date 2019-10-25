@@ -59,6 +59,14 @@ const routers = [{
             title: 'Shop Panel'
         },
         component: (resolve) => require(['./views/panels/shopPanel.vue'], resolve)
+    },
+    {
+        path: '/adventure',
+        name: 'adventure',
+        meta: {
+            title: 'Adventure'
+        },
+        component: (resolve) => require(['./views/adventure/company/coding.vue'], resolve)
     }
 ];
 export default routers;

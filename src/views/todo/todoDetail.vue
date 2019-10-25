@@ -1,5 +1,6 @@
 <template>
-  <Modal v-model="detailShown" @on-ok="ok" @on-cancel="cancel" width="750" height="750">
+  <Modal v-model="detailShown" @on-cancel="cancel" width="750" height="750">
+    <p slot="footer"></p>
     <Row>
       <Col span="18">
         <!-- card name -->
@@ -30,7 +31,7 @@
             >{{ tag.name }}</Tag>
             <Button icon="ios-add" type="dashed" size="small" @click="openTagDialog">add tag</Button>
             <!-- All tags modal -->
-            <Modal v-model="tagDialogShown" scrollable title="tags" width="350" :mask="false"> 
+            <Modal v-model="tagDialogShown" scrollable title="tags" width="350" :mask="false">
               <p slot="header" style="text-align: center">tag</p>
               <Tag
                 v-for="tag in allTags"
@@ -112,7 +113,7 @@
               @click="closeComment"
             ></Button>
             <div v-for="comment in comments" :key="comment.id">
-              <Card style="width:320px">{{ comment.content }}</Card>
+              <Card style="width:320px; margin: 10px 0;">{{ comment.content }}</Card>
               <a>edit</a> -
               <a>delete</a>
             </div>
@@ -129,11 +130,25 @@
           <Cell title="deadline" />
           <Cell title="file" />
           <p>operation</p>
-          <Cell title="move"><Icon slot="icon" type="md-arrow-forward"></Icon></Cell>
-          <Cell title="copy"><Icon slot="icon" type="md-copy"></Icon></Cell>
-          <Cell title="watch"><Icon slot="icon" type="md-eye"></Icon></Cell>
-          <Cell title="delete"><Icon slot="icon" type="md-close"></Icon></Cell>
-          <Cell title="share"><Icon slot="icon" type="md-share"></Icon></Cell>
+          <Cell title="move">
+            <Icon slot="icon" type="md-arrow-forward"></Icon>
+          </Cell>
+          <Cell title="copy">
+            <Icon slot="icon" type="md-copy"></Icon>
+          </Cell>
+          <Cell
+            :title="isWatched ? 'unWatch' : 'watch'"
+            @click.native="switchWatchStatus"
+            :style="{backgroundColor: isWatched ? '#19be6b' : ''}"
+          >
+            <Icon slot="icon" type="md-eye"></Icon>
+          </Cell>
+          <Cell title="delete">
+            <Icon slot="icon" type="md-close"></Icon>
+          </Cell>
+          <Cell title="share">
+            <Icon slot="icon" type="md-share"></Icon>
+          </Cell>
         </CellGroup>
       </Col>
     </Row>
@@ -141,6 +156,9 @@
 </template>
 <script>
 export default {
+  mounted() {
+    console.log(this.todo);
+  },
   props: {
     todo: Object,
     todoDetailShown: Boolean,
@@ -159,6 +177,7 @@ export default {
       textareaShown: false,
       commentTextareaShown: false,
       tagDialogShown: false,
+      isWatched: false,
       tags: [],
       detail: "",
       inputDetail: "",
@@ -180,6 +199,7 @@ export default {
   methods: {
     // cancel button's callback
     cancel() {
+      this.tagDialogShown = false;
       this.$emit("close-detail-dialog");
     },
     // ok button's callback
@@ -244,6 +264,11 @@ export default {
         }
       });
       this.tags.splice(index, 1);
+    },
+    // swich the status of watch
+    switchWatchStatus() {
+      this.isWatched = !this.isWatched;
+      this.$emit("switch-watch-status", this.isWatched);
     }
   }
 };

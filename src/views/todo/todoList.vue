@@ -15,18 +15,19 @@
           <DropdownItem>operate2</DropdownItem>
         </DropdownMenu>
       </Dropdown>
+      <todoDetail
+        :todoDetailShown="todoDetailShown"
+        :todo="todoDetail"
+        :list-name="name"
+        @switch-watch-status="switchWatchStatus"
+        @close-detail-dialog="todoDetailShown = false"
+      ></todoDetail>
       <Card
         style="width: 100%; margin: 8px 0"
         v-for="todo in todoList"
         :key="todo.id"
-        @click.native="openDetail"
+        @click.native="openDetail(todo.id)"
       >
-        <todoDetail
-          :todoDetailShown="todoDetailShown"
-          :todo="todoList[todo.id - 1]"
-          :list-name="name"
-          @close-detail-dialog="todoDetailShown = false"
-        ></todoDetail>
         <Dropdown slot="extra" trigger="click" style="margin-left: 20px" placement="bottom-end">
           <Button size="small" shape="circle" icon="md-brush"></Button>
           <DropdownMenu slot="list">
@@ -37,7 +38,7 @@
         <div>
           <h5>{{ todo.name }}</h5>
           <Tooltip content="you are watching this todo" theme="light" placement="bottom-start">
-            <Icon v-show="true" type="md-eye"></Icon>
+            <Icon v-show="isWatched" type="md-eye"></Icon>
           </Tooltip>
           <Tooltip content="this todo has comments" theme="light" placement="bottom-start">
             <Icon v-show="true" type="md-chatboxes"></Icon>
@@ -74,7 +75,9 @@ export default {
     return {
       addCellShown: true,
       todoDetailShown: false,
-      newCardName: ""
+      isWatched: false,
+      newCardName: "",
+      todoDetail: ""
     };
   },
   methods: {
@@ -92,7 +95,8 @@ export default {
       this.$emit("delete-todo", id);
     },
     // open todo's detail dialog
-    openDetail() {
+    openDetail(id) {
+      this.todoDetail = this.todoList[id - 1];
       this.todoDetailShown = true;
       this.cancelAdd();
     },
@@ -103,6 +107,10 @@ export default {
     // cancel add new todo
     cancelAdd() {
       this.addCellShown = true;
+    },
+    // switch the eye icon shown status depend on watch status
+    switchWatchStatus(status) {
+      this.isWatched = status;
     }
   }
 };
