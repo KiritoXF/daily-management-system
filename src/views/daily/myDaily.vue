@@ -235,21 +235,13 @@ export default {
     },
     // 进入填写周报界面
     edit(index) {
-      // db 查询该周号的信息
-      this.$http
-        .get("/api/myDaily/getSelectedWeek", {
-          params: { weekNum: this.infos[index].weeks }
-        })
-        .then(data => {
-          const infos = data.body[0];
-          this.$router.push({
-            name: "weekDaily",
-            params: {
-              infos: infos,
-              updateFlag: true
-            }
-          });
-        });
+      // change goes here
+      this.$router.push({
+        name: "weekDaily",
+        query: {
+          weekNum: this.infos[index].weeks 
+        }
+      });
     },
     // 处理infos数组
     handleData(infos) {
