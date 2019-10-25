@@ -4,6 +4,12 @@
 
 适用于个人的日报管理系统
 
+
+## 介绍
+
+[English version](./readme_EN.md)
+
+
 ## 使用
 
 1. 安装依赖
