@@ -9,7 +9,7 @@
       </Col>
     </Row>
 
-    <Table size="large" :columns="title" :data="tableData.workInfos"></Table>
+    <Table size="large" :columns="title" :data="tableData.workInfos" show-summary></Table>
     <p>总计 {{ tableData.sumCost }}</p>
     <Input
       v-model="tableData.ps"

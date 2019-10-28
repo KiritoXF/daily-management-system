@@ -96,6 +96,30 @@ var sqlMap = {
                 originInfo
             where
                 weeks = ?
+        `,
+        getSettings: `
+            select
+                locations,
+                groupNames,
+                workCategories
+            from
+                setting
+            where
+                userName = ?
+            and
+                team = ?
+        `,
+        updateSettings: `
+            update
+                setting
+            set
+                locations = ?,
+                groupNames = ?,
+                workCategories = ?
+            where
+                userName = ?
+            and 
+                team = ?
         `
     }
 }

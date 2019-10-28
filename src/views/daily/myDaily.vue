@@ -1,5 +1,6 @@
 <template>
   <div style="padding: 0 10px">
+    <keep-alive>
     <Tabs type="card" :animated="false">
       <TabPane label="原始数据" style="padding: 10px;">
         <input type="file" v-show="false" accept=".csv" ref="uploadBox" />
@@ -41,7 +42,7 @@
       <TabPane label="各工作类型时间变化">
         <div id="everyWorkloadCategoryChart" class="echart-div"></div>
       </TabPane>
-    </Tabs>
+    </Tabs></keep-alive>
   </div>
 </template>
 <style>
@@ -245,7 +246,8 @@ export default {
       this.$router.push({
         name: "weekDaily",
         query: {
-          weekNum: this.infos[index].weeks
+          weekNum: this.infos[index].weeks,
+          updateFlag: true
         }
       });
     },

@@ -131,6 +131,42 @@ router.post('/deleteSelected', (req, res) => {
     })
 });
 
+// get settings - myDaily
+router.get('/getSettings', (req, res) => {
+    const sql = $sql.myDaily.getSettings;
+    // TODO: multi user
+    const userName = 'admin';
+    const team = 'default';
+    conn.query(sql, [userName, team], (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        if (result) {
+            res.send(result);
+        }
+    })
+});
+
+// update settings - myDaily
+router.put('/updateSettings', (req, res) => {
+    const sql = $sql.myDaily.updateSettings;
+    // TODO: multi user
+    const userName = "admin";
+    const team = "default";
+    const settings = req.body;
+    settings.push([userName]);
+    settings.push([team]);
+    conn.query(sql, settings, (err, result) => {
+        if (err) {
+            console.log(err);
+            console.log(sql, settings);
+        }
+        if (result) {
+            res.send(result);
+        }
+    })
+});
+
 // down here useless. just for examples.
 
 
