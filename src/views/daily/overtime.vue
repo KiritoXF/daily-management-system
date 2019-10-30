@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 0 10px">
     <div id="overtimeChart" class="overtime-div"></div>
-    <Button size="large" icon="md-add" type="primary" :loading="loading" @click="addOvertime">填写记录</Button>
+    <Button size="large" icon="md-add" type="primary" :loading="loading" @click="openAddDialog">填写记录</Button>
     <Table border :columns="columns" :data="infos" :loading="loading" ellipsis max-height="600" style="margin: 20px 0">
     </Table>
     <overtimeAdd :overtimeAddShown="overtimeAddShown" :settings="settings" @close-add-dialog="closeAddDialog"
@@ -29,7 +29,7 @@
           },
           {
             title: "加班日期(yy/mm/dd)",
-            key: "date",
+            key: "overtimeDate",
             minWidth: 80
           },
           {
@@ -75,33 +75,50 @@
       this.getLocationsAndGroupNames();
     },
     methods: {
-      addOvertime() {
+      // open overtime add dialog
+      openAddDialog() {
         this.overtimeAddShown = true;
       },
+      // close overtime add dialog
       closeAddDialog() {
         this.overtimeAddShown = false;
       },
+      // save overtime record and update settings.
       save(record, settings) {
-        // do sth.
+        const transRecord = record;
+        // TODO: 共通化
+        const offWorkTime = record.time
+          .split(":")
+          .map(time => parseInt(time));
+        let worktime = 0;
+        if (offWorkTime[0] < 18) {
+          worktime = offWorkTime[0] + 14 + offWorkTime[1] / 60;
+        } else {
+          worktime = offWorkTime[0] - 9 + offWorkTime[1] / 60;
+        }
+        transRecord.workTime = parseFloat(worktime.toFixed(1));
+        transRecord.overtimeHours = parseInt((worktime - 8).toFixed(1));
+
         this.$http.put("/api/myDaily/updateSettings", [
-          settings.locations,
-          settings.groupNames,
-          []
+          settings.locations.join('|'),
+          settings.groupNames.join('|'),
+          ""
         ], {}).then(response => {
-          this.overtimeAddShown = false;
+          this.$http.post("/api/myDaily/addOvertimeRecord",
+            Object.entries(transRecord).map(arr => arr[1])
+          , {}).then(response => {
+            this.overtimeAddShown = false;
+          });
         });
       },
-      //
+      // get settings from db. only need locations and groupNames here.
       getLocationsAndGroupNames() {
-        this.loading = false;
-        /** 
         this.$http.get("/api/myDaily/getSettings", {}).then(data => {
           const settings = data.body[0];
-          this.settings.locations = settings.locations.substring(1, settings.locations.length - 1);
-          this.settings.groupNames = settings.groupNames.substring(1, settings.groupNames.length - 1);
+          this.settings.locations = settings.locations.split('|');
+          this.settings.groupNames = settings.groupNames.split('|');
           this.loading = false;
         });
-        */
       }
     }
   };

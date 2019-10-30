@@ -4,7 +4,7 @@
       @on-ok="ok" width="450" height="650" :styles="{top: '20px'}">
       <Form :model="record" :label-width="100">
         <FormItem label="加班日期:">
-          <DatePicker type="date" placeholder="Select the overtime date" v-model="record.date"></DatePicker>
+          <DatePicker type="date" placeholder="Select the overtime date" v-model="record.overtimeDate"></DatePicker>
         </FormItem>
         <FormItem label="下班时间:">
           <TimePicker format="HH:mm" :steps="[1, 10]" placeholder="Select off work time" v-model="record.time">
@@ -81,9 +81,9 @@
       // Triggered when creating a new location.
       addLocation(val) {
         if (this.settings.locations.includes(val)) {
-          this.$Notice.warning({
-            title: "已经添加了同名的内容"
-          });
+          this.showWarningMessage('已经添加了同名的内容');
+        } else if (val.includes('|')) {
+          this.showWarningMessage('含有非法的字符 | ');
         } else {
           this.settings.locations.push(val);
         }
@@ -91,14 +91,19 @@
       // Triggered when creating a new group name.
       addGroupName(val) {
         if (this.settings.groupNames.includes(val)) {
-          this.$Notice.warning({
-            title: "已经添加了同名的内容"
-          });
+          this.showWarningMessage('已经添加了同名的内容');
+        } else if (val.includes('|')) {
+          this.showWarningMessage('含有非法的字符 | ');
         } else {
           this.settings.groupNames.push(val);
         }
       },
-
+      // show warning message
+      showWarningMessage(message) {
+        this.$Notice.warning({
+          title: message
+        });
+      }
     }
   };
 </script>

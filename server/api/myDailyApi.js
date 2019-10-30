@@ -5,11 +5,14 @@ var router = express.Router();
 var mysql = require('mysql');
 var $sql = require('../sqlMap');
 
+// TODO: multi user
+const userName = 'admin';
+const team = 'default';
+
 // 连接数据库
 var conn = mysql.createConnection(models.mysql);
 
 conn.connect();
-
 
 // save daily info
 router.post('/addDailyInfo', (req, res) => {
@@ -70,7 +73,7 @@ router.get('/getSelectedWeek', (req, res) => {
             res.send(result);
         }
     })
-})
+});
 
 // update weekDaily Data - myDaily
 router.put('/updateWeekData', (req, res) => {
@@ -134,9 +137,6 @@ router.post('/deleteSelected', (req, res) => {
 // get settings - myDaily
 router.get('/getSettings', (req, res) => {
     const sql = $sql.myDaily.getSettings;
-    // TODO: multi user
-    const userName = 'admin';
-    const team = 'default';
     conn.query(sql, [userName, team], (err, result) => {
         if (err) {
             console.log(err);
@@ -150,16 +150,12 @@ router.get('/getSettings', (req, res) => {
 // update settings - myDaily
 router.put('/updateSettings', (req, res) => {
     const sql = $sql.myDaily.updateSettings;
-    // TODO: multi user
-    const userName = "admin";
-    const team = "default";
     const settings = req.body;
-    settings.push([userName]);
-    settings.push([team]);
+    settings.push(userName);
+    settings.push(team);
     conn.query(sql, settings, (err, result) => {
         if (err) {
             console.log(err);
-            console.log(sql, settings);
         }
         if (result) {
             res.send(result);
@@ -167,13 +163,26 @@ router.put('/updateSettings', (req, res) => {
     })
 });
 
-// down here useless. just for examples.
+// get all overtime records - myDaily
+router.get('/getAllOvertimeRecord', (req, res) => {
+    const sql = $sql.myDaily.getAllOvertimeRecord;
+    conn.query(sql, [userName, team], (err, records) => {
+        if (err) {
+            console.log(err);
+        }
+        if (result) {
+            res.send(records);
+        }
+    })
+});
 
-
-// 查询所有招募记录
-router.get('/getAll', (req, res) => {
-    const sql = $sql.recruitRecord.getAll;
-    conn.query(sql, (err, result) => {
+// get selected overtime record - myDaily
+router.get('/getSelectedOvertimeRecord', (req, res) => {
+    const sql = $sql.myDaily.getSelectedOvertimeRecord;
+    const overtimeDate = req.query.overtimeDate;
+    conn.query(sql, [
+        [overtimeDate, userName, team]
+    ], (err, result) => {
         if (err) {
             console.log(err);
         }
@@ -183,18 +192,21 @@ router.get('/getAll', (req, res) => {
     })
 });
 
-// 查询干员信息
-router.get('/getEmpInfo', (req, res) => {
-    const sql = $sql.employee.getInfo;
-    conn.query(sql, [req.body.name], (err, result) => {
+// add overtime record - myDaily
+router.post('/addOvertimeRecord', (req, res) => {
+    const sql = $sql.myDaily.addOvertimeRecord;
+    let params = req.body;
+    params.unshift(userName, team);
+    conn.query(sql, [[params]], (err, result) => {
         if (err) {
+            console.log(sql, [[params]]);
             console.log(err);
         }
         if (result) {
-            console.log(sql, [req.body.name]);
             res.send(result);
         }
     })
-})
+});
+
 
 module.exports = router;

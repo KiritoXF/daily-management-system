@@ -60,17 +60,6 @@ var sqlMap = {
                 originInfo
             where
                 weeks = ?
-
-        `,
-        addWeekdayInfo: `
-            insert into
-                weekdayInfo(
-                    date,
-                    weeks,
-
-                
-                ) values ?
-
         `,
         updateWeekData: `
             update
@@ -119,6 +108,62 @@ var sqlMap = {
             where
                 userName = ?
             and 
+                team = ?
+        `,
+        addOvertimeRecord: `
+            insert into
+                overtime(
+                    userName,
+                    team,
+                    overtimeDate,
+                    offWorkTime,
+                    workContent,
+                    isVolunteer,
+                    location,
+                    groupName,
+                    note,
+                    worktime,
+                    overtimeHours,
+                ) values ?
+        `,
+        getAllOvertimeRecord: `
+            select
+                overtimeDate,
+                offWorkTime,
+                worktime,
+                overtimeHours,
+                workContent,
+                isVolunteer,
+                location,
+                groupName,
+                note
+            from
+                overtime
+            where
+                userName = ?
+            and 
+                team = ?
+            order by
+                overtimeDate asc
+        `,
+        getSelectedOvertimeRecord: `
+            select
+                overtimeDate,
+                offWorkTime,
+                worktime,
+                overtimeHours,
+                workContent,
+                isVolunteer,
+                location,
+                groupName,
+                note
+            from
+                overtime
+            where
+                overtimeDate = ?
+            and 
+                userName = ?
+            and
                 team = ?
         `
     }
