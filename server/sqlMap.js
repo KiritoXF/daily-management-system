@@ -117,13 +117,13 @@ var sqlMap = {
                     team,
                     overtimeDate,
                     offWorkTime,
+                    worktime,
+                    overtimeHours,
                     workContent,
                     isVolunteer,
                     location,
                     groupName,
-                    note,
-                    worktime,
-                    overtimeHours,
+                    note
                 ) values ?
         `,
         getAllOvertimeRecord: `
@@ -162,6 +162,16 @@ var sqlMap = {
             where
                 overtimeDate = ?
             and 
+                userName = ?
+            and
+                team = ?
+        `,
+        deleteSelectedOvertimeRecord: `
+            delete from
+                overtime
+            where
+                overtimeDate = ?
+            and
                 userName = ?
             and
                 team = ?

@@ -7,7 +7,7 @@
           <DatePicker type="date" placeholder="Select the overtime date" v-model="record.overtimeDate"></DatePicker>
         </FormItem>
         <FormItem label="下班时间:">
-          <TimePicker format="HH:mm" :steps="[1, 10]" placeholder="Select off work time" v-model="record.time">
+          <TimePicker format="HH:mm" :steps="[1, 10]" placeholder="Select off work time" v-model="record.offWorkTime">
           </TimePicker>
         </FormItem>
         <FormItem label="工作时长:">{{ worktime || 0 }}h</FormItem>
@@ -16,7 +16,7 @@
           <Input v-model="record.workContent" placeholder="what takes your time?" style="width: 200px" />
         </FormItem>
         <FormItem label="是否自主加班">
-          <Switch size="large">
+          <Switch size="large" v-model="record.isVolunteer">
             <span slot="open">Yes</span>
             <span slot="close">No</span>
           </Switch>
@@ -43,28 +43,36 @@
   export default {
     props: {
       overtimeAddShown: Boolean,
-      settings: Object
+      settings: Object,
+      record: Object
+    },
+    computed: {
+      shown() {
+        return this.overtimeAddShown;
+      }
+    },
+    mounted() {
+      console.log('nononono');
     },
     data() {
       return {
-        record: {},
         locations: [],
         groupNames: []
       };
     },
     computed: {
       worktime() {
-        if (!this.record.time) {
+        if (!this.record.offWorkTime) {
           return;
         }
-        const offWorkTime = this.record.time
+        const offTime = this.record.offWorkTime
           .split(":")
           .map(time => parseInt(time));
         let worktime = 0;
-        if (offWorkTime[0] < 18) {
-          worktime = offWorkTime[0] + 14 + offWorkTime[1] / 60;
+        if (offTime[0] < 18) {
+          worktime = offTime[0] + 14 + offTime[1] / 60;
         } else {
-          worktime = offWorkTime[0] - 9 + offWorkTime[1] / 60;
+          worktime = offTime[0] - 9 + offTime[1] / 60;
         }
         return parseFloat(worktime.toFixed(1));
       }

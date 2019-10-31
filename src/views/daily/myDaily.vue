@@ -31,7 +31,7 @@
         </Table>
       </TabPane>
       <TabPane label="加班记录表">
-        <overtime></overtime>
+        <keep-alive><overtime></overtime></keep-alive>
       </TabPane>
       <TabPane label="各种类工作时长">
         <div id="workloadCategoryChart" class="echart-div"></div>

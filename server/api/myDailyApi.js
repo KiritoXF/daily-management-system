@@ -170,7 +170,7 @@ router.get('/getAllOvertimeRecord', (req, res) => {
         if (err) {
             console.log(err);
         }
-        if (result) {
+        if (records) {
             res.send(records);
         }
     })
@@ -199,7 +199,7 @@ router.post('/addOvertimeRecord', (req, res) => {
     params.unshift(userName, team);
     conn.query(sql, [[params]], (err, result) => {
         if (err) {
-            console.log(sql, [[params]]);
+            console.log(params.isVolunteer);
             console.log(err);
         }
         if (result) {
@@ -208,5 +208,17 @@ router.post('/addOvertimeRecord', (req, res) => {
     })
 });
 
+// delete target overtime record. - myDaily
+router.post('/deleteSelectedOvertimeRecord', (req, res) => {
+    const sql = $sql.myDaily.deleteSelectedOvertimeRecord;
+    conn.query(sql, [req.body.overtimeDate, userName, team], (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        if (result) {
+            res.send(result);
+        }
+    })
+});
 
 module.exports = router;

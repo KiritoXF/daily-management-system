@@ -2,9 +2,14 @@
   <div style="padding: 0 10px">
     <div id="overtimeChart" class="overtime-div"></div>
     <Button size="large" icon="md-add" type="primary" :loading="loading" @click="openAddDialog">填写记录</Button>
-    <Table border :columns="columns" :data="infos" :loading="loading" ellipsis max-height="600" style="margin: 20px 0">
+    <Table border :columns="columns" :data="records" :loading="loading" ellipsis max-height="600"
+      style="margin: 20px 0">
+      <template slot-scope="{ row, index }" slot="action">
+        <Button type="primary" size="small" @click="edit(index)">编辑</Button>
+        <Button type="error" size="small" @click="openDeleteConfirmDialog(index)">删除</Button>
+      </template>
     </Table>
-    <overtimeAdd :overtimeAddShown="overtimeAddShown" :settings="settings" @close-add-dialog="closeAddDialog"
+    <overtimeAdd :overtimeAddShown="overtimeAddShown" :record="record" :settings="settings" @close-add-dialog="closeAddDialog"
       @save="save"></overtimeAdd>
   </div>
 </template>
@@ -63,9 +68,15 @@
           {
             title: "备注",
             key: "note"
+          },
+          {
+            title: "操作",
+            slot: "action",
+            minWidth: 60
           }
         ],
-        infos: [],
+        records: [],
+        record: {},
         loading: true,
         overtimeAddShown: false,
         settings: {}
@@ -85,7 +96,6 @@
       },
       // save overtime record and update settings.
       save(record, settings) {
-        const transRecord = record;
         // TODO: 共通化
         const offWorkTime = record.time
           .split(":")
@@ -96,8 +106,16 @@
         } else {
           worktime = offWorkTime[0] - 9 + offWorkTime[1] / 60;
         }
-        transRecord.workTime = parseFloat(worktime.toFixed(1));
-        transRecord.overtimeHours = parseInt((worktime - 8).toFixed(1));
+        const transArr = [];
+        transArr.push(new Date(record.overtimeDate).toLocaleDateString(),
+          record.time,
+          worktime,
+          parseInt((worktime - 8).toFixed(1)),
+          record.workContent,
+          record.isVolunteer ? 1 : 0,
+          record.location,
+          record.groupName,
+          record.note || '');
 
         this.$http.put("/api/myDaily/updateSettings", [
           settings.locations.join('|'),
@@ -105,11 +123,19 @@
           ""
         ], {}).then(response => {
           this.$http.post("/api/myDaily/addOvertimeRecord",
-            Object.entries(transRecord).map(arr => arr[1])
-          , {}).then(response => {
+            transArr, {}).then(response => {
             this.overtimeAddShown = false;
           });
         });
+      },
+      // open edit dialog
+      edit(index) {
+        this.record = this.records[index];
+        this.overtimeAddShown = true;
+      },
+      // open delete confirm dialog
+      openDeleteConfirmDialog(index) {
+
       },
       // get settings from db. only need locations and groupNames here.
       getLocationsAndGroupNames() {
@@ -117,6 +143,13 @@
           const settings = data.body[0];
           this.settings.locations = settings.locations.split('|');
           this.settings.groupNames = settings.groupNames.split('|');
+          this.getRecords();
+        });
+      },
+      // get all overtime records.
+      getRecords() {
+        this.$http.get("/api/myDaily/getAllOvertimeRecord", {}).then(data => {
+          this.records = data.body;
           this.loading = false;
         });
       }
