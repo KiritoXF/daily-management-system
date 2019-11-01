@@ -1,6 +1,6 @@
 # daily-management-system
 
-基于Vue.js 2.5 + vue-router + webpack 4.31.0 + iView 3.4.2 + MySQL 5.7.26 + express
+Vue.js 2 + vue-router + webpack 4 + View UI 4 + MySQL 5.7.26 + express
 
 适用于个人的日报管理系统
 
