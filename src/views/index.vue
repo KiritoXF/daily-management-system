@@ -2,7 +2,7 @@
   <div class="index">
     <div style="text-align: center;">
       <h1>
-        <p>Welcome Page(设计中)</p>
+        <p>Welcome Page</p>
       </h1>
     </div>
     <Row style="padding: 50px 100px">
