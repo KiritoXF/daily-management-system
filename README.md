@@ -47,6 +47,6 @@ npm run build
 ## 演示
 
 ![](https://github.com/KiritoXF/daily_management_system/blob/master/pictures/home_page.PNG)
-![](./pictures/week_daily.png)
-![](./pictures/daily_page.png)
-![](./pictures/work_category_page.png)
+![](https://github.com/KiritoXF/daily_management_system/blob/master/pictures/week_daily.png)
+![](https://github.com/KiritoXF/daily_management_system/blob/master/pictures/daily_page.png)
+![](https://github.com/KiritoXF/daily_management_system/blob/master/pictures/work_category_page.png)
