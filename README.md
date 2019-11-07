@@ -46,4 +46,4 @@ npm run build
 
 ## 演示
 
-![](../pictures/home_page)
+![](./pictures/home_page)
