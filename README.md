@@ -46,4 +46,7 @@ npm run build
 
 ## 演示
 
-![](./pictures/home_page)
+![](./pictures/home_page.png)
+![](./pictures/week_daily.png)
+![](./pictures/daily_page.png)
+![](./pictures/work_category_page.png)
