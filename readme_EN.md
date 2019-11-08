@@ -15,7 +15,7 @@ DMS is just a demo but the 'Daily' part could work well. You can also import and
 5. npm run server
 6. http://localhost:8081
 
-## 演示
+## Presentation
 
 ![](https://github.com/KiritoXF/daily_management_system/blob/master/pictures/home_page.PNG)
 ![](https://github.com/KiritoXF/daily_management_system/blob/master/pictures/week_daily.PNG)
