@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import VueI18n from './locales/'
 import iView from 'view-design';
 import VueRouter from 'vue-router';
 import Routers from './router';
@@ -7,8 +8,10 @@ import App from './app.vue';
 import VueResource from 'vue-resource';
 import Chart from 'vue-chartjs';
 import EChart from 'echarts';
-// import VueI18n from 'vue-i18n'
 import 'view-design/dist/styles/iview.css';
+
+
+Vue.use(VueI18n)
 
 // vue 拖拽插件
 import {
@@ -50,6 +53,7 @@ router.afterEach((to, from, next) => {
 });
 
 new Vue({
+    i18n,
     el: '#app',
     data: {
         Bus

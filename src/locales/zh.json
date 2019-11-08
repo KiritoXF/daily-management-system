@@ -1,0 +1,14 @@
+{
+    "test": "测试",
+    "welcomeMessage": "欢迎界面",
+    "introduce": "介绍",
+    "introduce.welcomeMessage": "欢迎使用日报管理系统",
+    "introduce.checkForNew": "第一次使用？请查看 ",
+    "guide": "指南",
+    "weekDailyInfo": "周报信息",
+    "personalDaily": "个人周报",
+    "teamDaily": "团队周报",
+    "dailyManagement": "周报管理",
+    "toBeDone": "待处理",
+    "noTodoNow": "目前没有待处理的任务"
+}
