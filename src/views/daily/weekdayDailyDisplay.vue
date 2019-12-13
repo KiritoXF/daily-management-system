@@ -1,11 +1,13 @@
 <template>
   <div>
+    <Row>
+      <Col span="4">
+        <Button @click="openEditDialog" type="primary">编辑</Button>
+      </Col>
+    </Row>
     <Row type="flex" justify="start" align="middle">
       <Col span="4">
         <p>日期：{{ currentDate }}</p>
-      </Col>
-      <Col span="4" offset="16">
-        <Button @click="openEditDialog" type="primary">编辑</Button>
       </Col>
     </Row>
 

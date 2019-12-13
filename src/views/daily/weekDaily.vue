@@ -4,7 +4,7 @@
 <template>
   <div style="padding: 50px">
     <Row type="flex" justify="start" align="middle">
-      <Col span="2">
+      <Col span="3">
       <p>选择本周起止时间</p>
       </Col>
       <Col span="4">
@@ -14,7 +14,7 @@
       <Col span="2">
       <p>选择周数</p>
       </Col>
-      <Col span="4">
+      <Col span="3">
       <InputNumber :min="1" v-model="weekNumber"></InputNumber>
       </Col>
       <Col span="4" offset="8">
