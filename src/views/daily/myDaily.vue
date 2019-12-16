@@ -12,7 +12,7 @@
             <Page :current="currentPage" :total="totalDatas" @on-change="changePage" simple />
           </div>
           <Table border :columns="columns" :data="this.tableDatas" :loading="loading" ellipsis ref="infoTable"
-            height="500" style="margin: 20px 0">
+            style="margin: 20px 0">
             <template slot-scope="{ row, index }" slot="action">
               <Button type="primary" size="small" @click="edit(index)">编辑</Button>
               <Button type="error" size="small" @click="openDeleteConfirmDialog(index)">删除</Button>

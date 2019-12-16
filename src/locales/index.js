@@ -3,11 +3,11 @@ import VueI18n from 'vue-i18n'
 
 Vue.use(VueI18n)
 
-const DEFAULT_LANG = 'zh'
+const DEFAULT_LANG = 'zh_CN'
 const LOCALE_KEY = 'localeLanguage'
 
 const locales = {
-  zh: require('./zh.json'),
+  zh_CN: require('./zh_CN.json'),
   en: require('./en.json'),
   ja: require('./ja.json')
 }
