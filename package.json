@@ -7,7 +7,8 @@
     "init": "webpack --progress --config webpack.dev.config.js",
     "dev": "webpack-dev-server --content-base ./ --open --inline --hot --compress --history-api-fallback --config webpack.dev.config.js",
     "build": "webpack --progress --hide-modules --config webpack.prod.config.js",
-    "server": "nodemon ./server/index"
+    "server": "nodemon ./server/index",
+    "start": "concurrently \"npm run dev\" \"npm run server\" "
   },
   "author": "kiritoXF",
   "license": "MIT",
@@ -15,7 +16,7 @@
     "chart.js": "^2.8.0",
     "echarts": "^4.2.1",
     "express": "^4.17.1",
-    "mysql": "^2.17.1",
+    "mysql": "^2.17.1", 
     "view-design": "^4.0.2",
     "vue": "^2.6.10",
     "vue-chart.js": "^0.2.0",

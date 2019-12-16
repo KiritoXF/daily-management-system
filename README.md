@@ -26,10 +26,7 @@ npm install
 ### Development
 
 ```
-npm run dev
-
-// 启动数据库
-npm run server
+npm run start
 ```
 
 ### Production(Build)
