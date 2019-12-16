@@ -11,8 +11,8 @@
           <div style="float: right;">
             <Page :current="currentPage" :total="totalDatas" @on-change="changePage" simple />
           </div>
-          <Table border :columns="columns" :data="this.tableDatas" :loading="loading" ellipsis ref="infoTable" height="500"
-            style="margin: 20px 0">
+          <Table border :columns="columns" :data="this.tableDatas" :loading="loading" ellipsis ref="infoTable"
+            height="500" style="margin: 20px 0">
             <template slot-scope="{ row, index }" slot="action">
               <Button type="primary" size="small" @click="edit(index)">编辑</Button>
               <Button type="error" size="small" @click="openDeleteConfirmDialog(index)">删除</Button>
@@ -156,19 +156,18 @@
       // 导出原始数据
       // ~~TODO~~: weekData will be separated to parts cause default separator is ','
       // fixed by: add "" and use escape
-      exportFullData() {
-        const columns = this.columns
-          .map(item => {
-            if (item.children != null) {
-              return item.children;
-            } else {
-              return item;
-            }
-          })
-          .flat();
-        this.infos.forEach(
-          item => (item.weekData = '"' + escape(item.weekData) + '"')
-        );
+      // TODO: add start and end to export method. (add modal)
+      exportFullData(start, end) {
+        const columns = this.columns.map(item => {
+          if (item.children != null) {
+            return item.children;
+          }
+          return item;
+        }).flat();
+        const exportData = this.infos.slice(start - 1, end).map(info => {
+          info.weekData = '"' + escape(info.weekData) + '"';
+          return info;
+        })
         columns.push({
           title: "weekData",
           key: "weekData"
@@ -176,7 +175,7 @@
         this.$refs.infoTable.exportCsv({
           filename: "Original Data",
           columns: columns,
-          data: this.infos
+          data: exportData
         });
       },
       // 读取周报信息
