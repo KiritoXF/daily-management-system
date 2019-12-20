@@ -9,8 +9,14 @@
         <Button type="error" size="small" @click="openDeleteConfirmDialog(index)">删除</Button>
       </template>
     </Table>
-    <overtimeAdd :overtimeAddShown="overtimeAddShown" :record="record" :settings="settings" @close-add-dialog="closeAddDialog"
-      @save="save"></overtimeAdd>
+    <!-- <overtimeAdd :overtimeAddShown="overtimeAddShown" :record="record" :settings="settings"
+      @close-add-dialog="closeAddDialog" @save="save"></overtimeAdd> -->
+
+
+    <Modal v-model="overtimeAddShown" :mask-closable="false" title="Add Overtime record dialog"
+      @on-cancel="closeAddDialog" @on-ok="save(record, settings)" width="450" height="650" :styles="{top: '20px'}">
+      <overtimeAdd :record="record" :settings="settings"></overtimeAdd>
+    </Modal>
   </div>
 </template>
 <style>
@@ -97,7 +103,7 @@
       // save overtime record and update settings.
       save(record, settings) {
         // TODO: 共通化
-        const offWorkTime = record.time
+        const offWorkTime = record.offWorkTime
           .split(":")
           .map(time => parseInt(time));
         let worktime = 0;
@@ -108,7 +114,7 @@
         }
         const transArr = [];
         transArr.push(new Date(record.overtimeDate).toLocaleDateString(),
-          record.time,
+          record.offWorkTime,
           worktime,
           parseInt((worktime - 8).toFixed(1)),
           record.workContent,
@@ -149,7 +155,10 @@
       // get all overtime records.
       getRecords() {
         this.$http.get("/api/myDaily/getAllOvertimeRecord", {}).then(data => {
-          this.records = data.body;
+          this.records = data.body.map(record => {
+            record.isVolunteer = record.isVolunteer ? true : false;
+            return record;
+          });
           this.loading = false;
         });
       }

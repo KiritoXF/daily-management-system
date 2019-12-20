@@ -208,6 +208,19 @@ router.post('/addOvertimeRecord', (req, res) => {
     })
 });
 
+// update overtime record - myDaily
+router.put('/updateOvertimeRecord', (req, res) => {
+    const sql = $sql.myDaily.updateOvertimeRecord;
+    conn.query(sql, req.body, (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        if (result) {
+            res.send(result);
+        }
+    })
+});
+
 // delete target overtime record. - myDaily
 router.post('/deleteSelectedOvertimeRecord', (req, res) => {
     const sql = $sql.myDaily.deleteSelectedOvertimeRecord;

@@ -126,6 +126,22 @@ var sqlMap = {
                     note
                 ) values ?
         `,
+        updateOvertimeRecord:`
+            update 
+                overtime
+            set
+                overtimeDate = ?,
+                offWorkTime = ?,
+                worktime = ?,
+                overtimeHours = ?,
+                workContent = ?,
+                isVolunteer = ?,
+                location = ?,
+                groupName = ?,
+                note = ?
+            where
+                overtimeDate = ?
+        `,
         getAllOvertimeRecord: `
             select
                 overtimeDate,
