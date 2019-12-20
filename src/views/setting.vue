@@ -4,7 +4,7 @@
     <Divider />
     <h3>{{ $t('language') }}</h3>
     <RadioGroup v-model="locale">
-      <Radio :label="$t('language.szh')" border></Radio>
+      <Radio :label="$t('language.zh_CN')" border></Radio>
       <Radio :label="$t('language.en')" border disabled></Radio>
       <Radio :label="$t('language.ja')" border disabled></Radio>
     </RadioGroup>
@@ -33,7 +33,7 @@
     data() {
       return {
         // TODO: 语言可更改
-        locale: this.$i18n.t('language.szh'),
+        locale: this.$i18n.t('language.zh_CN'),
         allWorkCategories: [],
         targetWorkCategories: [],
         allLocations: [],

@@ -4,9 +4,9 @@
   "description": "A personal daily management system. Provide add, view and data visualization",
   "main": "index.js",
   "scripts": {
-    "init": "webpack --progress --config webpack.dev.config.js",
-    "dev": "webpack-dev-server --content-base ./ --open --inline --hot --compress --history-api-fallback --config webpack.dev.config.js",
-    "build": "webpack --progress --hide-modules --config webpack.prod.config.js",
+    "init": "webpack --progress --config ./config/webpack.dev.config.js",
+    "dev": "webpack-dev-server --content-base ./ --open --inline --hot --compress --history-api-fallback --config ./config/webpack.dev.config.js",
+    "build": "webpack --progress --hide-modules --config ./config/webpack.prod.config.js",
     "server": "nodemon ./server/index",
     "start": "concurrently \"npm run dev\" \"npm run server\" "
   },

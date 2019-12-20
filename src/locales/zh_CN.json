@@ -6,7 +6,7 @@
     "introduce.checkForNew": "第一次使用？请查看 ",
     "guide": "指南",
     "weekDailyInfo": "周报信息",
-    "personalDaily": "个人周报",
+    "personalDaily": "我的周报",
     "teamDaily": "团队周报",
     "dailyManagement": "周报管理",
     "toBeDone": "待处理",
@@ -23,7 +23,7 @@
     "location": "地点",
     "team": "团队",
     "language": "语言",
-    "language.szh": "简体中文",
+    "language.zh_CN": "简体中文",
     "language.en": "英语",
     "language.ja": "日语",
     "duplicate.add": "已添加相同的内容"
