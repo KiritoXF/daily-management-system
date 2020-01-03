@@ -30,12 +30,18 @@
     <Divider />
     <Tabs type="card">
       <TabPane label="详情">
+        <label>切换表格风格</label>
+        <Switch size="large" @on-change="switchChartType">
+          <span slot="open" style="width: 200px">严肃</span>
+          <span slot="close">卡通</span>
+        </Switch>
         <Row>
           <Col span="10">
           <Table size="small" :columns="tableTitle" :data="weekDetail" show-summary></Table>
           </Col>
           <Col span="14">
-          <div id="weekSumCostChart" class="canvas-div"></div>
+          <div id="weekSumCostEChart" class="canvas-div" v-show="switchStatus"></div>
+          <div id="weekSumCostVizChart" v-show="!switchStatus"></div>
           </Col>
         </Row>
       </TabPane>
@@ -74,6 +80,7 @@
 <script>
   import weekdayDailyDisplay from "./weekdayDailyDisplay";
   import buildEChart from "../../js/chart/buildEChart";
+  import buildVizChart from "../../js/chart/buildVizChart";
 
   export default {
     components: {
@@ -135,12 +142,20 @@
             ).toLocaleDateString();
         });
         // build chart
-        if (document.getElementById("weekSumCostChart") != null) {
+        if (document.getElementById("weekSumCostEChart") != null) {
           buildEChart.buildBarEChart(
-            "weekSumCostChart",
+            "weekSumCostEChart",
             this.getSumCostByCategoryOneWeek(dataMap),
             ["编码", "测试", "文档编写", "自学", "翻译", "准备工作"],
             "各种类工作时长直方图"
+          );
+          buildVizChart.buildBarChart(
+            "#weekSumCostVizChart",
+            this.getSumCostByCategoryOneWeek(dataMap),
+            ["编码", "测试", "文档编写", "自学", "翻译", "准备工作"],
+            "各种类工作时长直方图",
+            600,
+            400
           );
         }
         return weekDetail;
@@ -251,7 +266,8 @@
             key: "useless",
             width: "60"
           }
-        ]
+        ],
+        switchStatus: false
       };
     },
     methods: {
@@ -265,9 +281,11 @@
           this.openConfirmDailog(infos);
         } else {
           this.$http
-            .post("/api/myDaily/importOriginData", {
-              infos: [infos]
-            }, {})
+            .post(
+              "/api/myDaily/importOriginData", {
+                infos: [infos]
+              }, {}
+            )
             .then(response => {
               this.goBack();
             });
@@ -504,14 +522,11 @@
           currentMonth,
           firstWeekday + 6
         );
+      },
+      // 切换表格风格
+      switchChartType(status) {
+        this.switchStatus = status;
       }
-    },
-    test() {
-      function MyClass() {}
-      var mc = new MyClass();
-      console.log(mc.hasOwnProperty("name"));
-      console.log(mc.__proto__);
-      console.log("hasOwnProperty" in mc);
     }
   };
 </script>

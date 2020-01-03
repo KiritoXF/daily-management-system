@@ -13,7 +13,7 @@ const buildVizChart = {
      * @param {Ayyay} xAxisLabels - 横轴标签
      * @param {String} title - 图表的标题
      */
-    buildBarChart(id, seriesData, xAxisLabels, title) {
+    buildBarChart(id, seriesData, xAxisLabels, title, width, height) {
         new roughViz.Bar({
             element: id,
             data: {
@@ -23,8 +23,8 @@ const buildVizChart = {
             color: '#3398DB',
             fillStyle: 'cross-hatch', // 填充样式
             fillWeight: 1,
-            width: 1000,
-            height: 600,
+            width: width,
+            height: height,
             margin: {top: 100, right: 20, bottom: 100, left: 100},
             roughness: 2, // 图表的杂乱度。数值越大，图表越乱。
             title: title,

@@ -312,7 +312,9 @@
           "#workloadCategoryVizChart",
           chartData.category,
           ["编码", "测试", "文档编写", "自学", "翻译", "准备工作"],
-          "工作时长"
+          "工作时长",
+          1000,
+          600
         );
         buildEChart.buildBarEChart(
           "workloadCategoryEChart",
