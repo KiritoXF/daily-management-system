@@ -25,7 +25,13 @@
           </keep-alive>
         </TabPane>
         <TabPane label="各种类工作时长">
-          <div id="workloadCategoryChart" class="echart-div"></div>
+          <label>切换表格风格</label>
+          <Switch size="large" @on-change="switchChartType">
+            <span slot="open" style="width: 200px">严肃</span>
+            <span slot="close">卡通</span>
+          </Switch>
+          <div id="workloadCategoryEChart" class="echart-div" v-show="switchStatus"></div>
+          <div id="workloadCategoryVizChart" v-show="!switchStatus"></div>
         </TabPane>
         <TabPane label="总工作量">
           <div id="sumWorkloadChart" class="echart-div"></div>
@@ -38,6 +44,12 @@
   </div>
 </template>
 <style>
+  .wrapper {
+    display: flex;
+    flex: wrap;
+    order: row;
+  }
+
   .echart-div {
     width: 1000px;
     height: 600px;
@@ -55,6 +67,7 @@
 </style>
 <script>
   import buildEChart from "../../js/chart/buildEChart";
+  import buildVizChart from "../../js/chart/buildVizChart";
   import overtime from "./overtime";
   import XLSX from "xlsx";
 
@@ -134,7 +147,8 @@
         tableDatas: [], // tableDatas are datas shown in every page. max length is 10.
         loading: true,
         currentPage: 1,
-        totalDatas: 100
+        totalDatas: 100,
+        switchStatus: false
       };
     },
     methods: {
@@ -158,16 +172,18 @@
       // fixed by: add "" and use escape
       // TODO: add start and end to export method. (add modal)
       exportFullData(start, end) {
-        const columns = this.columns.map(item => {
-          if (item.children != null) {
-            return item.children;
-          }
-          return item;
-        }).flat();
+        const columns = this.columns
+          .map(item => {
+            if (item.children != null) {
+              return item.children;
+            }
+            return item;
+          })
+          .flat();
         const exportData = this.infos.slice(start - 1, end).map(info => {
           info.weekData = '"' + escape(info.weekData) + '"';
           return info;
-        })
+        });
         columns.push({
           title: "weekData",
           key: "weekData"
@@ -292,12 +308,19 @@
       // draw charts
       drawCharts() {
         const chartData = this.handleData(this.infos);
-        buildEChart.buildBarEChart(
-          "workloadCategoryChart",
+        buildVizChart.buildBarChart(
+          "#workloadCategoryVizChart",
           chartData.category,
           ["编码", "测试", "文档编写", "自学", "翻译", "准备工作"],
           "工作时长"
         );
+        buildEChart.buildBarEChart(
+          "workloadCategoryEChart",
+          chartData.category,
+          ["编码", "测试", "文档编写", "自学", "翻译", "准备工作"],
+          "工作时长"
+        );
+        
         buildEChart.buildLineEChart(
           "sumWorkloadChart",
           "总工作量变化折线图",
@@ -441,6 +464,10 @@
             reader.readAsBinaryString(file);
           });
         };
+      },
+      // 切换表格风格
+      switchChartType(status) {
+        this.switchStatus = status;
       }
     }
   };
