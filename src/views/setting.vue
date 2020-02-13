@@ -19,7 +19,7 @@
 <style>
   .save-button {
     float: right;
-    margin: 20px;
+    margin: 20px !important;
   }
 </style>
 
