@@ -67,6 +67,14 @@ const routers = [{
             title: 'Adventure'
         },
         component: (resolve) => require(['./views/adventure/company/coding.vue'], resolve)
+    },
+    {
+        path: '/calendar',
+        name: 'calendar',
+        meta: {
+            title: 'Calendar'
+        },
+        component: (resolve) => require(['./views/calendar/main-calendar.vue'], resolve)
     }
 ];
 export default routers;

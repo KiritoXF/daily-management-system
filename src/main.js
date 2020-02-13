@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import vuetify from '../src/plugins/vuetify';
 import VueI18n from './locales/'
 import iView from 'view-design';
 import VueRouter from 'vue-router';
@@ -9,7 +10,6 @@ import VueResource from 'vue-resource';
 import Chart from 'vue-chartjs';
 import EChart from 'echarts';
 import 'view-design/dist/styles/iview.css';
-
 
 Vue.use(VueI18n)
 
@@ -53,6 +53,7 @@ router.afterEach((to, from, next) => {
 });
 
 new Vue({
+    vuetify,
     i18n,
     el: '#app',
     data: {

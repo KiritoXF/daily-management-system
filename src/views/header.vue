@@ -28,6 +28,11 @@
             <Icon type=""></Icon>Adventure
           </MenuItem>
         </router-link>
+        <router-link to="/calendar">
+          <MenuItem name="calendar">
+            <Icon type=""></Icon>Calendar
+          </MenuItem>
+        </router-link>
         <router-link to="/setting">
           <MenuItem name="setting">
             <Icon type="md-settings"></Icon>设置
