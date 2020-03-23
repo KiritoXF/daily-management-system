@@ -39,6 +39,9 @@
         <TabPane label="各工作类型时间变化">
           <div id="everyWorkloadCategoryChart" class="echart-div"></div>
         </TabPane>
+        <TabPane label="工作饱和度">
+          <div id="workSaturationChart" class="echart-div"></div>
+        </TabPane>
       </Tabs>
     </keep-alive>
   </div>
@@ -298,7 +301,8 @@
             handledData.useless.toFixed(1)
           ],
           sumWorkload: infos.map(item => item.weekWorkload),
-          infos: infos
+          infos: infos,
+          workSaturation: infos.map(item => parseFloat(item.workSaturation) / 100)
         };
       },
       // click the import button
@@ -322,7 +326,7 @@
           ["编码", "测试", "文档编写", "自学", "翻译", "准备工作"],
           "工作时长"
         );
-        
+
         buildEChart.buildLineEChart(
           "sumWorkloadChart",
           "总工作量变化折线图",
@@ -371,6 +375,18 @@
             }
           ]
         );
+        buildEChart.buildLineEChart(
+          "workSaturationChart",
+          "工作饱和度变化区域填充折线图",
+          chartData.infos.map((item, i) => `第${i + 1}周`),
+          ["周数"],
+          [{
+            data: chartData.workSaturation,
+            type: "line",
+            name: "工作饱和度(%)",
+            areaStyle: {}
+          }]
+        )
       },
       // 处理导入的文件
       handleImportData(data) {

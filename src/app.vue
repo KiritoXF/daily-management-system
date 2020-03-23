@@ -4,7 +4,7 @@
     <v-app>
       <router-view></router-view>
     </v-app>
-    <Footer></Footer>
+    <!--<Footer></Footer>-->
   </div>
 </template>
 <script>
