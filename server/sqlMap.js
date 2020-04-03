@@ -80,7 +80,7 @@ var sqlMap = {
             where
                 weeks = ?
         `,
-        deleteTargetWeek: `
+        deleteTargetInfo: `
             delete from
                 originInfo
             where

@@ -4,8 +4,8 @@
       <Tabs type="card" :animated="false">
         <TabPane label="原始数据" style="padding: 10px;">
           <input type="file" v-show="false" accept=".csv" ref="uploadBox" />
-          <Button size="large" icon="md-add" type="primary" :loading="loading" @click="addWeekDaily">新增周报</Button>
-          <Button size="large" icon="md-cloud-upload" :loading="loading" @click="importExcel">导入周报</Button>
+          <Button size="large" icon="md-add" type="primary" :loading="loading" @click="openWeekDailyPage">新增周报</Button>
+          <Button size="large" icon="md-cloud-upload" :loading="loading" @click="openImportDialog">导入周报</Button>
           <Button size="large" icon="ios-download" :loading="loading" @click="exportFullData">导出周报</Button>
           <Button size="large" :loading="loading" @click="reverse">倒序</Button>
           <div style="float: right;">
@@ -14,7 +14,7 @@
           <Table border :columns="columns" :data="this.tableDatas" :loading="loading" ellipsis ref="infoTable"
             style="margin: 20px 0">
             <template slot-scope="{ row, index }" slot="action">
-              <Button type="primary" size="small" @click="edit(index)">编辑</Button>
+              <Button type="primary" size="small" @click="openEditInfoPage(index)">编辑</Button>
               <Button type="error" size="small" @click="openDeleteConfirmDialog(index)">删除</Button>
             </template>
           </Table>
@@ -161,7 +161,7 @@
         this.changePage(1);
       },
       // 填写新的周报
-      addWeekDaily() {
+      openWeekDailyPage() {
         this.$router.push({
           path: "/myDaily/weekDaily",
           name: "weekDaily",
@@ -175,14 +175,9 @@
       // fixed by: add "" and use escape
       // TODO: add start and end to export method. (add modal)
       exportFullData(start, end) {
-        const columns = this.columns
-          .map(item => {
-            if (item.children != null) {
-              return item.children;
-            }
-            return item;
-          })
-          .flat();
+        const columns = this.columns.map(item => {
+          return item.childrem != null ? item.children : item;
+        }).flat();
         const exportData = this.infos.slice(start - 1, end).map(info => {
           info.weekData = '"' + escape(info.weekData) + '"';
           return info;
@@ -199,71 +194,66 @@
       },
       // 读取周报信息
       getAllInfos() {
-        const me = this;
-        me.loading = true;
+        const that = this;
+        that.loading = true;
         this.$http.get("/api/myDaily/getAllData", {}).then(data => {
-          this.infos = me.addCssToData(data.body);
+          this.infos = that.addCssToData(data.body);
           this.totalDatas = this.infos.length;
           this.tableDatas = this.infos.slice(0, 10);
-          me.loading = false;
+          that.loading = false;
           this.drawCharts();
         });
       },
       // Callback when page number is changed. It returns the changed page number.
+      // 切换page时触发
       changePage(newPage) {
-        console.log(newPage);
-        const start = newPage > 1 ? newPage - 1 : 0;
+        const start = newPage - 1 > 0 ? newPage - 1 : 0;
         this.tableDatas = this.infos.slice(start * 10, newPage * 10);
       },
       // 给数据加css
       addCssToData(data) {
         return data.map(item => {
           item.cellClassName = {};
-          item.cellClassName.weekWorkload =
-            item.weekWorkload > 40 ? "over-work" : "ok-work";
+          item.cellClassName.weekWorkload = item.weekWorkload > 40 ? "over-work" : "ok-work";
           item.cellClassName.weekday = item.weekday > 5 ? "over-work" : "ok-work";
-          item.cellClassName.averageWorkload =
-            item.averageWorkload > 8 ? "over-work" : "ok-work";
+          item.cellClassName.averageWorkload = item.averageWorkload > 8 ? "over-work" : "ok-work";
           item.workSaturation = (item.workSaturation * 100).toFixed(1) + "%";
           return item;
         });
       },
       // 导入周报原始数据
       importInfos(infos) {
-        this.$http
-          .post(
-            "/api/myDaily/importOriginData", {
-              infos: infos
-            }, {}
-          )
-          .then(response => {
-            this.getAllInfos();
-          });
+        this.$http.post("/api/myDaily/importOriginData", {
+          infos: infos
+        }, {}).then(() => {
+          this.getAllInfos();
+        });
       },
-      // open delete confirm dialog
+      // 打开删除确认对话框
       openDeleteConfirmDialog(index) {
         this.$Modal.confirm({
-          title: "Delete Confirm Dialog",
-          content: `<p>Are you sure you want to delete week <strong>${this.infos[index].weeks}</strong>'s daily record? This can not be reset.</p>`,
+          title: this.$i18n.t('daily.deleteConfirmationDialog'),
+          content: this.$i18n.t('daily.deleteConfirmationMessage', {
+            week: this.infos[index].weeks
+          }),
           loading: true,
           onOk: () => {
-            this.deleteTargetWeek(index);
+            this.deleteTargetInfo(index);
           }
         });
       },
       // delete target week's daily record
-      deleteTargetWeek(index) {
-        this.$http
-          .post("/api/myDaily/deleteTargetWeek", {
-            index: this.infos[index].weeks
-          })
-          .then(response => {
-            this.$Modal.remove();
-            this.getAllInfos();
-          });
+      // 删除指定周的周报
+      deleteTargetInfo(index) {
+        this.$http.post("/api/myDaily/deleteTargetInfo", {
+          index: this.infos[index].weeks
+        }).then(() => {
+          this.$Modal.remove();
+          this.getAllInfos();
+        });
       },
       // 进入填写周报界面
-      edit(index) {
+      openEditInfoPage(index) {
         // change goes here
         this.$router.push({
           name: "weekDaily",
@@ -283,7 +273,7 @@
           translate: 0, // 翻译
           useless: 0 // 准备工作
         };
-        infos.map(item => {
+        infos.forEach(item => {
           handledData.coding += item.coding;
           handledData.testing += item.testing;
           handledData.documentWriting += item.documentWriting;
@@ -300,18 +290,21 @@
             handledData.translate.toFixed(1),
             handledData.useless.toFixed(1)
           ],
-          sumWorkload: infos.map(item => item.weekWorkload),
           infos: infos,
+          sumWorkload: infos.map(item => item.weekWorkload),
           workSaturation: infos.map(item => parseFloat(item.workSaturation) / 100)
         };
       },
       // click the import button
-      importExcel() {
+      // 点击导入按钮，打开对话框
+      openImportDialog() {
         this.$refs.uploadBox.click();
       },
       // draw charts
+      // 绘制图表
       drawCharts() {
         const chartData = this.handleData(this.infos);
+        // RoughViz 这个可以考虑删了 太丑了
         buildVizChart.buildBarChart(
           "#workloadCategoryVizChart",
           chartData.category,
@@ -326,7 +319,6 @@
           ["编码", "测试", "文档编写", "自学", "翻译", "准备工作"],
           "工作时长"
         );
-
         buildEChart.buildLineEChart(
           "sumWorkloadChart",
           "总工作量变化折线图",
@@ -405,16 +397,12 @@
             weekday: Number(item[10] || 0),
             averageWorkload: Number(item[11] || 0),
             workSaturation: Number(
-              (
-                (Number(item[2]) + Number(item[3]) + Number(item[4])) /
-                Number(item[9])
-              ).toFixed(1)
+              ((Number(item[2]) + Number(item[3]) + Number(item[4])) / Number(item[9])).toFixed(1)
             ) || 0,
             // unescape and remove the double quotes at start and last.
             weekData: unescape(item[12]).replace(/^["|'](.*)["|']$/g, "$1")
           });
         });
-
         const importData = handledData.map(item => {
           return [
             item.timeInterval,
@@ -432,23 +420,20 @@
             item.weekData
           ];
         });
-
         this.infos = handledData;
         this.importInfos(importData);
         this.drawCharts();
       },
       // 导入本地csv文件
       importCSV(res, file) {
-        const me = this;
-        var input = document.querySelector("input");
-        input.addEventListener(
+        const that = this;
+        const inputDOM = document.querySelector("input");
+        inputDOM.addEventListener(
           "change",
           function () {
             importExcel(this.files, function (data) {});
-          },
-          false
+          }, false
         );
-
         var importExcel = function (files, back) {
           if (!files instanceof FileList) {
             return [];
@@ -474,7 +459,7 @@
                 });
               loadIndex++;
               if (loadIndex === files.length) {
-                me.handleImportData(
+                that.handleImportData(
                   lines.filter(item => item.length != 0).slice(1)
                 );
               }

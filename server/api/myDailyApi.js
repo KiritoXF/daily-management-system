@@ -91,8 +91,8 @@ router.put('/updateWeekData', (req, res) => {
 });
 
 // delete target Week's daily record. - myDaily
-router.post('/deleteTargetWeek', (req, res) => {
-    const sql = $sql.myDaily.deleteTargetWeek;
+router.post('/deleteTargetInfo', (req, res) => {
+    const sql = $sql.myDaily.deleteTargetInfo;
     conn.query(sql, [req.body.index], (err, result) => {
         console.log(sql, req.body.index)
         if (err) {
