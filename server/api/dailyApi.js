@@ -1,3 +1,9 @@
+/*
+
+ * 这个文件及所有api都是 **没用** 的！
+ * 仅为了以防万一留在这
+ * 正确的api是 ** myDaily ** 
+
 /* eslint-disable no-console */
 var models = require('../db');
 var express = require('express');

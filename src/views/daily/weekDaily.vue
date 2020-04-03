@@ -32,16 +32,16 @@
       <TabPane label="详情">
         <label>切换表格风格</label>
         <Switch size="large" @on-change="switchChartType">
-          <span slot="open" style="width: 200px">严肃</span>
-          <span slot="close">卡通</span>
+          <span slot="close" style="width: 200px">严肃</span>
+          <span slot="open">卡通</span>
         </Switch>
         <Row>
           <Col span="10">
           <Table size="small" :columns="tableTitle" :data="weekDetail" show-summary></Table>
           </Col>
           <Col span="14">
-          <div id="weekSumCostEChart" class="canvas-div" v-show="switchStatus"></div>
-          <div id="weekSumCostVizChart" v-show="!switchStatus"></div>
+          <div id="weekSumCostEChart" class="canvas-div" v-show="!switchStatus"></div>
+          <div id="weekSumCostVizChart" v-show="switchStatus"></div>
           </Col>
         </Row>
       </TabPane>
@@ -294,21 +294,17 @@
       // update时打开确认对话框
       openConfirmDailog(infos) {
         this.$Modal.confirm({
-          title: "更新周报确认",
-          content: "<p>Are you sure you want to update a current EXISTED WEEK DAILY RECORD?</p>",
+          title: this.$i18n.t("daily.updateConfirmationDialog"),
+          content: this.$i18n.t("daily.updateConfirmationMessage"),
           loading: true,
           onOk: () => {
-            this.$http
-              .put(
-                "/api/myDaily/updateWeekData", {
-                  infos: infos,
-                  weeks: this.$router.history.current.query.weekNum
-                }, {}
-              )
-              .then(response => {
-                this.$Modal.remove();
-                this.goBack();
-              });
+            this.$http.put("/api/myDaily/updateWeekData", {
+              infos: infos,
+              weeks: this.$router.history.current.query.weekNum
+            }, {}).then(response => {
+              this.$Modal.remove();
+              this.goBack();
+            });
           },
           onCancel: () => {
             this.loading = false;
@@ -338,34 +334,13 @@
         const saturdayMap = new Map();
         const sundayMap = new Map();
 
-        mondayMap.set(
-          "monday",
-          this.getEveryCategoryCost(weekData.monday.workInfos)
-        );
-        tuesdayMap.set(
-          "tuesday",
-          this.getEveryCategoryCost(weekData.tuesday.workInfos)
-        );
-        wednesdayMap.set(
-          "wednesday",
-          this.getEveryCategoryCost(weekData.wednesday.workInfos)
-        );
-        thursdayMap.set(
-          "thursday",
-          this.getEveryCategoryCost(weekData.thursday.workInfos)
-        );
-        fridayMap.set(
-          "friday",
-          this.getEveryCategoryCost(weekData.friday.workInfos)
-        );
-        saturdayMap.set(
-          "saturday",
-          this.getEveryCategoryCost(weekData.saturday.workInfos)
-        );
-        sundayMap.set(
-          "sunday",
-          this.getEveryCategoryCost(weekData.sunday.workInfos)
-        );
+        mondayMap.set("monday", this.getEveryCategoryCost(weekData.monday.workInfos));
+        tuesdayMap.set("tuesday", this.getEveryCategoryCost(weekData.tuesday.workInfos));
+        wednesdayMap.set("wednesday", this.getEveryCategoryCost(weekData.wednesday.workInfos));
+        thursdayMap.set("thursday", this.getEveryCategoryCost(weekData.thursday.workInfos));
+        fridayMap.set("friday", this.getEveryCategoryCost(weekData.friday.workInfos));
+        saturdayMap.set("saturday", this.getEveryCategoryCost(weekData.saturday.workInfos));
+        sundayMap.set("sunday", this.getEveryCategoryCost(weekData.sunday.workInfos));
         const mergedMap = new Map([
           ...mondayMap,
           ...tuesdayMap,
@@ -393,14 +368,7 @@
           translate += value.translate;
           useless += value.useless;
         });
-        return [
-          coding,
-          testing,
-          documentWriting,
-          selfStudying,
-          translate,
-          useless
-        ];
+        return [coding, testing, documentWriting, selfStudying, translate, useless];
       },
       // 制造往后台传的数据类型
       getFormattedData(weekData) {
@@ -429,18 +397,9 @@
         );
 
         return [
-          timeInterval,
-          this.weekNumber,
-          sumCategoryCost,
-          weekWorkload,
-          weekday,
+          timeInterval, this.weekNumber, sumCategoryCost, weekWorkload, weekday,
           Number((weekWorkload / weekday).toFixed(1)),
-          Number(
-            (
-              (sumCategoryCost[0] + sumCategoryCost[1] + sumCategoryCost[2]) /
-              weekWorkload
-            ).toFixed(2)
-          )
+          Number(((sumCategoryCost[0] + sumCategoryCost[1] + sumCategoryCost[2]) / weekWorkload).toFixed(2))
         ].flat();
       },
       // 根据指定天的事项数组获取各类事项的耗费时间
