@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 0 10px">
+  <div style="padding: 50px 10px">
     <keep-alive>
       <Tabs type="card" :animated="false">
         <TabPane label="原始数据" style="padding: 10px;">

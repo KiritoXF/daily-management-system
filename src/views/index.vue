@@ -7,9 +7,9 @@
     </div>
     <Row style="padding: 50px 100px">
       <Col span="12">
-      <Card style="width: 600px;">
+      <Card style="width: 600px; padding: 10px;">
         <h3 slot="title">{{ $t("introduce") }}</h3>
-        <Dropdown slot="extra" trigger="click" style="margin-left: 20px">
+        <Dropdown slot="extra" trigger="click" style="margin-left: 20px;">
           <Button shape="circle" icon="md-more"></Button>
           <DropdownMenu slot="list">
             <DropdownItem>operate1</DropdownItem>
@@ -28,7 +28,7 @@
         <p slot="title">{{ $t("weekDailyInfo") }}</p>
         <CellGroup>
           <Cell :title="$t('personalDaily')" to="/mydaily" />
-          <Cell :title="$t('teamDaily')" :disabled="true" to="/" />
+          <Cell :title="$t('teamDaily')" :disabled="true" /> <!-- to="/" can't be added if it's disabled. -->
           <hr />
           <Cell :title="$t('dailyManagement')" :disabled="true" />
         </CellGroup>

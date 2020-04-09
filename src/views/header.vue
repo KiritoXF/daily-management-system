@@ -15,12 +15,12 @@
             <MenuItem name="3-1">我的周报</MenuItem>
           </router-link>
           <router-link to="/team/daily">
-            <MenuItem name="3-1">团队周报(设计中)</MenuItem>
+            <MenuItem name="3-1">团队周报</MenuItem>
           </router-link>
         </Submenu>
         <router-link to="/todo">
           <MenuItem name="todo">
-            <Icon type="md-alarm"></Icon>Todos(设计中)
+            <Icon type="md-alarm"></Icon>Todos
           </MenuItem>
         </router-link>
         <router-link to="/adventure">
@@ -31,6 +31,11 @@
         <router-link to="/calendar">
           <MenuItem name="calendar">
             <Icon type=""></Icon>Calendar
+          </MenuItem>
+        </router-link>
+        <router-link to="/time-progress">
+          <MenuItem name="timeProgress">
+            <Icon type="md-time"></Icon>时间进度
           </MenuItem>
         </router-link>
         <router-link to="/setting">

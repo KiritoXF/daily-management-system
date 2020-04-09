@@ -75,6 +75,14 @@ const routers = [{
             title: 'Calendar'
         },
         component: (resolve) => require(['./views/calendar/main-calendar.vue'], resolve)
+    },
+    {
+        path: '/time-progress',
+        name: 'timeProgress',
+        meta: {
+            title: 'Time Progress' // title 好像用不上？
+        },
+        component: (resolve) => require(['./views/time-progress.vue'], resolve)
     }
 ];
 export default routers;
