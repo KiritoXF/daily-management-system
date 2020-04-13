@@ -1,13 +1,27 @@
 <template>
-  <div style="padding: 50px 10px">
+  <div>
+    <span class="title-text">我的周报</span>
     <keep-alive>
-      <Tabs type="card" :animated="false">
+      <Tabs type="card" :animated="false" style="padding: 20px 10px;">
         <TabPane label="原始数据" style="padding: 10px;">
           <input type="file" v-show="false" accept=".csv" ref="uploadBox" />
-          <Button size="large" icon="md-add" type="primary" :loading="loading" @click="openWeekDailyPage">新增周报</Button>
-          <Button size="large" icon="md-cloud-upload" :loading="loading" @click="openImportDialog">导入周报</Button>
-          <Button size="large" icon="ios-download" :loading="loading" @click="exportFullData">导出周报</Button>
-          <Button size="large" :loading="loading" @click="reverse">倒序</Button>
+          <div style="padding: 10px 0;">
+            <Button icon="md-add" type="primary" :loading="loading" @click="openWeekDailyPage">新增周报</Button>
+            <Button icon="md-cloud-upload" :loading="loading" @click="openImportDialog">导入周报</Button>
+            <Button :loading="loading" @click="reverse">倒序</Button>
+          </div>
+          <div>
+            <Select v-model="startDate" placeholder="开始区间" @on-change="startDateOnChange" style="width:200px">
+              <Option v-for="item in startList" :value="item.value" :key="item.value">
+                {{ item.label }}</Option>
+            </Select>
+            ~
+            <Select v-model="endDate" placeholder="结束区间" style="width:200px">
+              <Option v-for="item in endList" :value="item.value" :key="item.value">
+                {{ item.label }}</Option>
+            </Select>
+            <Button icon="ios-download" :loading="loading" @click="exportFullData">导出周报</Button>
+          </div>
           <div style="float: right;">
             <Page :current="currentPage" :total="totalDatas" @on-change="changePage" simple />
           </div>
@@ -42,6 +56,9 @@
         <TabPane label="工作饱和度">
           <div id="workSaturationChart" class="echart-div"></div>
         </TabPane>
+        <TabPane label="文本编辑器">
+          <div id="editor"> iceEditor富文本编辑器test </div>
+        </TabPane>
       </Tabs>
     </keep-alive>
   </div>
@@ -67,18 +84,25 @@
     background-color: #a3e043;
     color: #000000;
   }
+
+  .title-text {
+    font-size: 24px;
+    padding: 50px;
+  }
 </style>
 <script>
   import buildEChart from "../../js/chart/buildEChart";
   import buildVizChart from "../../js/chart/buildVizChart";
   import overtime from "./overtime";
   import XLSX from "xlsx";
+  import ice from "../../js/editor/iceEditor";
 
   export default {
     mounted() {
       // 给input添加导入文件的功能，监听文件的变化
       this.importCSV();
       this.getAllInfos();
+      this.createIceEditor();
     },
     components: {
       overtime
@@ -151,7 +175,11 @@
         loading: true,
         currentPage: 1,
         totalDatas: 100,
-        switchStatus: false
+        switchStatus: false,
+        startDate: '',
+        endDate: '',
+        startList: [],
+        endList: []
       };
     },
     methods: {
@@ -173,12 +201,11 @@
       // 导出原始数据
       // ~~TODO~~: weekData will be separated to parts cause default separator is ','
       // fixed by: add "" and use escape
-      // TODO: add start and end to export method. (add modal)
-      exportFullData(start, end) {
+      exportFullData() {
         const columns = this.columns.map(item => {
           return item.childrem != null ? item.children : item;
         }).flat();
-        const exportData = this.infos.slice(start - 1, end).map(info => {
+        const exportData = this.infos.slice(this.startDate, this.endDate + 1).map(info => {
           info.weekData = '"' + escape(info.weekData) + '"';
           return info;
         });
@@ -187,10 +214,17 @@
           key: "weekData"
         });
         this.$refs.infoTable.exportCsv({
-          filename: "Original Data",
+          filename: this.getFileName(exportData),
           columns: columns,
           data: exportData
         });
+      },
+      // 根据起始时间生成文件名
+      getFileName(data) {
+        if (data.length <= 1) {
+          return 'Original Data';
+        }
+        return `${data[0].timeInterval.split('-')[0]}-${data.slice(-1)[0].timeInterval.split('-')[0]}周报`;
       },
       // 读取周报信息
       getAllInfos() {
@@ -198,6 +232,13 @@
         that.loading = true;
         this.$http.get("/api/myDaily/getAllData", {}).then(data => {
           this.infos = that.addCssToData(data.body);
+          this.startList = this.infos.map(info => {
+            return {
+              label: info.timeInterval,
+              value: info.weeks - 1
+            }
+          });
+          this.endList = [...this.startList];
           this.totalDatas = this.infos.length;
           this.tableDatas = this.infos.slice(0, 10);
           that.loading = false;
@@ -471,6 +512,50 @@
       // 切换表格风格
       switchChartType(status) {
         this.switchStatus = status;
+      },
+      // 创建富文本编辑器
+      createIceEditor() {
+        const e = new ice.editor('editor');
+        e.menu = [
+          'backColor', //字体背景颜色
+          'fontSize', //字体大小
+          'foreColor', //字体颜色
+          'bold', //粗体
+          'italic', //斜体
+          'underline', //下划线
+          'strikeThrough', //删除线
+          'justifyLeft', //左对齐
+          'justifyCenter', //居中对齐
+          'justifyRight', //右对齐
+          'indent', //增加缩进
+          'outdent', //减少缩进
+          'insertOrderedList', //有序列表
+          'insertUnorderedList', //无序列表
+          'superscript', //上标
+          'subscript', //下标
+          'createLink', //创建连接
+          'unlink', //取消连接
+          'insertHorizontalRule', //水平线
+          'table', //表格
+          'files', //附件
+          'music', //音乐
+          'video', //视频
+          'insertImage', //图片
+          'removeFormat', //格式化样式
+          'code', //源码
+        ];
+        e.create();
+      },
+      // 当开始日变化时，更改结束日的选择范围
+      startDateOnChange() {
+        const that = this;
+        let sameIndex = 0;
+        this.endList.forEach((item, index) => {
+          if (item.value === that.startDate) {
+            sameIndex = index;
+          }
+        });
+        this.endList = [...this.endList].slice(sameIndex, this.endList.length - 1);
       }
     }
   };

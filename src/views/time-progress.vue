@@ -1,6 +1,6 @@
 <template>
     <div class="main-body" v-cloak>
-        <Button @click="refresh">refresh</Button>
+        <Button @click="refresh" style="margin: 0 0 0 10px;">refresh</Button>
         <Row :gutter="10">
             <Col :span="12">
             <div>
