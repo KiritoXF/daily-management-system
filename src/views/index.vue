@@ -2,7 +2,7 @@
   <div class="index">
     <div style="text-align: center;">
       <h1>
-        <p>{{$t("welcomeMessage")}}</p> 
+        <p>{{$t("welcomeMessage")}}</p>
       </h1>
     </div>
     <Row style="padding: 50px 100px">
@@ -21,6 +21,21 @@
           {{ $t("introduce.checkForNew") }}
           <a href="https://github.com/KiritoXF/Daily_Management_System/wiki" target="_blank">{{ $t("guide") }}</a>
         </p>
+      </Card>
+      <Card style="width: 600px; padding: 10px; margin: 10px 0">
+        <h3 slot="title">{{ $t("navigation") }}</h3>
+        <a href="https://segmentfault.com/" target="_blank">
+          <img src="../images/sifou.png" size="36">
+        </a>
+        <a href="https://juejin.im/" target="_blank">
+          <img src="../images/juejin.png" size="36">
+        </a>
+        <a href="https://www.v2ex.com/" target="_blank">
+          <img src="../images/v2ex.png" size="36">
+        </a>
+        <a href="https://github.com/" target="_blank">
+          <img src="../images/github.png" size="36">
+        </a>
       </Card>
       </Col>
       <Col span="12">

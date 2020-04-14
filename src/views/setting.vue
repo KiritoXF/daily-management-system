@@ -3,10 +3,10 @@
     <h2>{{ $t("setting.setting") }}</h2>
     <Divider />
     <h3>{{ $t('language') }}</h3>
-    <RadioGroup v-model="locale">
-      <Radio :label="$t('language.zh_CN')" border></Radio>
-      <Radio :label="$t('language.en')" border disabled></Radio>
-      <Radio :label="$t('language.ja')" border disabled></Radio>
+    <RadioGroup v-model="locale" @on-change="changeLocale">
+      <Radio label="zh_CN" border></Radio>
+      <Radio label="en" border></Radio>
+      <Radio label="ja" border></Radio>
     </RadioGroup>
     <Divider />
     <panel :title="$t('workCategory')" :allKeys="allWorkCategories" :targetKeys="targetWorkCategories"></panel>
@@ -25,6 +25,9 @@
 
 <script>
   import panel from './setting/settingPanel';
+  import {
+    setToken, getToken
+  } from '../utils/auth'
 
   export default {
     components: {
@@ -33,7 +36,7 @@
     data() {
       return {
         // TODO: 语言可更改
-        locale: this.$i18n.t('language.zh_CN'),
+        locale: getToken('lang'),
         allWorkCategories: [],
         targetWorkCategories: [],
         allLocations: [],
@@ -44,10 +47,14 @@
     },
     mounted() {
       //TODO: get settings from db
+      this.$i18n.locale = this.locale;
     },
     methods: {
-      save() {
-
+      save() {},
+      // 更改语言
+      changeLocale(locale) {
+        setToken('lang', locale)
+        this.$i18n.locale = locale;
       }
     }
   };

@@ -30,5 +30,6 @@
     "daily.deleteConfirmationDialog": "删除确认对话框",
     "daily.deleteConfirmationMessage": "<p>您确定要删除第 {week} 周的周报？这将无法恢复。</p>",
     "daily.updateConfirmationDialog": "更新周报确认",
-    "daily.updateConfirmationMessage": "<p>您确定要对一个已存在的周报进行更新？</p>"
+    "daily.updateConfirmationMessage": "<p>您确定要对一个已存在的周报进行更新？</p>",
+    "navigation": "导航"
 }

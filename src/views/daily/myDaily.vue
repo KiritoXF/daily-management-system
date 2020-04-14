@@ -22,9 +22,6 @@
             </Select>
             <Button icon="ios-download" :loading="loading" @click="exportFullData">导出周报</Button>
           </div>
-          <div style="float: right;">
-            <Page :current="currentPage" :total="totalDatas" @on-change="changePage" simple />
-          </div>
           <Table border :columns="columns" :data="this.tableDatas" :loading="loading" ellipsis ref="infoTable"
             style="margin: 20px 0">
             <template slot-scope="{ row, index }" slot="action">
@@ -32,6 +29,9 @@
               <Button type="error" size="small" @click="openDeleteConfirmDialog(index)">删除</Button>
             </template>
           </Table>
+          <div style="float: right">
+            <Page :current="currentPage" :total="totalDatas" @on-change="changePage" simple />
+          </div>
         </TabPane>
         <TabPane label="加班记录表">
           <keep-alive>
