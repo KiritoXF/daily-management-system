@@ -51,3 +51,4 @@ npm run start
 ![](https://github.com/KiritoXF/daily_management_system/blob/master/pictures/week_daily.PNG)
 ![](https://github.com/KiritoXF/daily_management_system/blob/master/pictures/daily_page.PNG)
 ![](https://github.com/KiritoXF/daily_management_system/blob/master/pictures/work_category_page.PNG)
+![](https://github.com/KiritoXF/daily-management-system/blob/master/pictures/time_progress.PNG)
