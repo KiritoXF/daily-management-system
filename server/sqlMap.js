@@ -21,7 +21,7 @@ var sqlMap = {
             where
                 1=1
             order by
-                weeks   asc
+                weeks asc
         `,
         importOriginData: `
             insert into 
@@ -39,7 +39,7 @@ var sqlMap = {
                     averageWorkload,
                     workSaturation,
                     weekData
-                ) values ?
+                ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `,
         getSelectedWeek: `
             select

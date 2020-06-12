@@ -14,38 +14,6 @@ var conn = mysql.createConnection(models.mysql);
 
 conn.connect();
 
-// save daily info
-router.post('/addDailyInfo', (req, res) => {
-    const sql = $sql.daily.add;
-    let params = req.body.infos;
-    conn.query(sql, [
-        [params]
-    ], (err, result) => {
-        if (err) {
-            console.log(err);
-        }
-        if (result) {}
-    })
-});
-
-// update daily info
-router.put('/updateDailyInfo', (req, res) => {
-    const sql = $sql.daily.updateDailyInfo;
-    const params = req.body.index;
-    conn.query(sql, [
-        [params]
-    ], (err, result) => {
-        console.log(sql, [
-            [params]
-        ]);
-        if (err) {
-            console.log(err);
-        }
-        if (result) {}
-    })
-})
-
-
 // get all original daily infos - myDaily
 router.get('/getAllData', (req, res) => {
     const sql = $sql.myDaily.getAllData;

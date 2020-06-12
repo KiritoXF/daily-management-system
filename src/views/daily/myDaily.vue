@@ -7,7 +7,7 @@
           <input type="file" v-show="false" accept=".csv" ref="uploadBox" />
           <div style="padding: 10px 0;">
             <Button icon="md-add" type="primary" :loading="loading" @click="openWeekDailyPage">新增周报</Button>
-            <Button icon="md-cloud-upload" :loading="loading" @click="openImportDialog">导入周报</Button>
+            <Button icon="md-cloud-upload" @click="openImportDialog">导入周报</Button>
             <Button :loading="loading" @click="reverse">倒序</Button>
           </div>
           <div>
@@ -203,12 +203,20 @@
       // fixed by: add "" and use escape
       exportFullData() {
         const columns = this.columns.map(item => {
-          return item.childrem != null ? item.children : item;
+          return item.children != null ? item.children : item;
         }).flat();
-        const exportData = this.infos.slice(this.startDate, this.endDate + 1).map(info => {
-          info.weekData = '"' + escape(info.weekData) + '"';
-          return info;
-        });
+        let exportData;
+        if (this.startDate === '' && this.endDate === '') {
+          exportData = this.infos.map(info => {
+            info.weekData = '"' + escape(info.weekData) + '"';
+            return info;
+          });
+        } else {
+          exportData = this.infos.slice(this.startDate, this.endDate + 1).map(info => {
+            info.weekData = '"' + escape(info.weekData) + '"';
+            return info;
+          });
+        }
         columns.push({
           title: "weekData",
           key: "weekData"
@@ -431,17 +439,17 @@
             coding: Number(item[2] || 0),
             testing: Number(item[3] || 0),
             documentWriting: Number(item[4] || 0),
-            selfStudying: Number(item[6] || 0),
-            translate: Number(item[7] || 0),
-            useless: Number(item[8] || 0),
-            weekWorkload: Number(item[9] || 0),
-            weekday: Number(item[10] || 0),
-            averageWorkload: Number(item[11] || 0),
+            selfStudying: Number(item[5] || 0),
+            translate: Number(item[6] || 0),
+            useless: Number(item[7] || 0),
+            weekWorkload: Number(item[8] || 0),
+            weekday: Number(item[9] || 0),
+            averageWorkload: Number(item[10] || 0),
             workSaturation: Number(
-              ((Number(item[2]) + Number(item[3]) + Number(item[4])) / Number(item[9])).toFixed(1)
+              ((Number(item[2]) + Number(item[3]) + Number(item[4]) + Number(item[6]))/ Number(item[8])).toFixed(1)
             ) || 0,
             // unescape and remove the double quotes at start and last.
-            weekData: unescape(item[12]).replace(/^["|'](.*)["|']$/g, "$1")
+            weekData: unescape(item[13]).replace(/^["|'](.*)["|']$/g, "$1")
           });
         });
         const importData = handledData.map(item => {
@@ -460,6 +468,12 @@
             item.workSaturation,
             item.weekData
           ];
+          /*return `
+          ('${item.timeInterval}',${item.weeks},${item.coding},${item.testing}
+          ,${item.documentWriting},${item.selfStudying},${item.translate},${item.useless}
+          ,${item.weekWorkload},${item.weekday},${item.averageWorkload},${item.workSaturation}
+          ,'${item.weekData}');
+          `*/
         });
         this.infos = handledData;
         this.importInfos(importData);
@@ -555,7 +569,7 @@
             sameIndex = index;
           }
         });
-        this.endList = [...this.endList].slice(sameIndex, this.endList.length - 1);
+        this.endList = [...this.endList].slice(sameIndex, this.endList.length);
       }
     }
   };
