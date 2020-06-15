@@ -15,6 +15,7 @@ var conn = mysql.createConnection(models.mysql);
 conn.connect();
 
 // get all original daily infos - myDaily
+// done
 router.get('/getAllData', (req, res) => {
     const sql = $sql.myDaily.getAllData;
     conn.query(sql, (err, result) => {
@@ -28,6 +29,7 @@ router.get('/getAllData', (req, res) => {
 });
 
 // get selected daily infos - myDaily
+// done
 router.get('/getSelectedWeek', (req, res) => {
     const sql = $sql.myDaily.getSelectedWeek;
     const weekNum = req.query.weekNum;
@@ -44,6 +46,7 @@ router.get('/getSelectedWeek', (req, res) => {
 });
 
 // update weekDaily Data - myDaily
+// done
 router.put('/updateWeekData', (req, res) => {
     const sql = $sql.myDaily.updateWeekData;
     const infos = req.body.infos;
@@ -59,6 +62,7 @@ router.put('/updateWeekData', (req, res) => {
 });
 
 // delete target Week's daily record. - myDaily
+// done
 router.post('/deleteTargetInfo', (req, res) => {
     const sql = $sql.myDaily.deleteTargetInfo;
     conn.query(sql, [req.body.index], (err, result) => {
@@ -73,6 +77,7 @@ router.post('/deleteTargetInfo', (req, res) => {
 });
 
 // import origin daily info data - myDaily
+// done
 router.post('/importOriginData', (req, res) => {
     const sql = $sql.myDaily.importOriginData;
     let params = req.body.infos;
@@ -88,6 +93,7 @@ router.post('/importOriginData', (req, res) => {
 });
 
 // delete selected infos
+// what the hell is this? never used.
 router.post('/deleteSelected', (req, res) => {
     const sql = $sql.daily.deleteSelected;
     conn.query(sql, [
