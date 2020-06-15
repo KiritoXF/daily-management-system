@@ -3,7 +3,7 @@
 
 适用于个人的日报管理系统。支持导入导出 csv 表格，数据可视化，多语言，查看个人工作情况的变化及趋势。
 
-需要注意的是仅按照以下的步骤是运行不起来的。
+~~需要注意的是仅按照以下的步骤是运行不起来的。~~ (更换成sqlite了后应该是没问题了，但是还没换完)
 
 适合Windows使用（大概）
 
@@ -24,16 +24,13 @@ MySQL => Sqlite
 npm install
 ```
 
-2. 生成数据库
-
-在Mysql数据库中运行`/server/db/origininfo.sql`生成表。
-
-## 运行
-### Development
+2. 运行
 
 ```
 npm run start
 ```
+
+http://localhost:8081/myDaily
 
 ## 功能
 
