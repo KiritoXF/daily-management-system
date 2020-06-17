@@ -109,6 +109,7 @@ router.post('/deleteSelected', (req, res) => {
 });
 
 // get settings - myDaily
+// done
 router.get('/getSettings', (req, res) => {
     const sql = $sql.myDaily.getSettings;
     conn.query(sql, [userName, team], (err, result) => {
@@ -122,6 +123,7 @@ router.get('/getSettings', (req, res) => {
 });
 
 // update settings - myDaily
+// done
 router.put('/updateSettings', (req, res) => {
     const sql = $sql.myDaily.updateSettings;
     const settings = req.body;
@@ -138,6 +140,7 @@ router.put('/updateSettings', (req, res) => {
 });
 
 // get all overtime records - myDaily
+// done
 router.get('/getAllOvertimeRecord', (req, res) => {
     const sql = $sql.myDaily.getAllOvertimeRecord;
     conn.query(sql, [userName, team], (err, records) => {
@@ -151,6 +154,7 @@ router.get('/getAllOvertimeRecord', (req, res) => {
 });
 
 // get selected overtime record - myDaily
+// done
 router.get('/getSelectedOvertimeRecord', (req, res) => {
     const sql = $sql.myDaily.getSelectedOvertimeRecord;
     const overtimeDate = req.query.overtimeDate;
@@ -167,6 +171,7 @@ router.get('/getSelectedOvertimeRecord', (req, res) => {
 });
 
 // add overtime record - myDaily
+// done
 router.post('/addOvertimeRecord', (req, res) => {
     const sql = $sql.myDaily.addOvertimeRecord;
     let params = req.body;
@@ -183,6 +188,7 @@ router.post('/addOvertimeRecord', (req, res) => {
 });
 
 // update overtime record - myDaily
+// done
 router.put('/updateOvertimeRecord', (req, res) => {
     const sql = $sql.myDaily.updateOvertimeRecord;
     conn.query(sql, req.body, (err, result) => {

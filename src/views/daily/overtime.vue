@@ -85,7 +85,8 @@
         record: {},
         loading: true,
         overtimeAddShown: false,
-        settings: {}
+        settings: {},
+        currentIndex: -1
       };
     },
     mounted() {
@@ -122,33 +123,50 @@
           record.location,
           record.groupName,
           record.note || '');
+        const originDate = new Date(this.records[this.currentIndex].overtimeDate).toLocaleDateString();
+        const updateFlag = originDate === transArr[0];
 
         this.$http.put("/api/myDaily/updateSettings", [
           settings.locations.join('|'),
           settings.groupNames.join('|'),
           ""
         ], {}).then(response => {
-          this.$http.post("/api/myDaily/addOvertimeRecord",
-            transArr, {}).then(response => {
-            this.overtimeAddShown = false;
-          });
+          if (updateFlag) {
+            // update
+            this.$http.put("/api/myDaily/updateOvertimeRecord", transArr , {}).then(response => {
+              this.overtimeAddShown = false;
+              this.currentIndex = -1;
+            });
+          } else {
+            // add
+            this.$http.post("/api/myDaily/addOvertimeRecord",
+              transArr, {}).then(response => {
+              this.overtimeAddShown = false;
+            });
+          }
         });
       },
       // open edit dialog
       edit(index) {
+        this.currentIndex = index;
         this.record = this.records[index];
         this.overtimeAddShown = true;
       },
       // open delete confirm dialog
       openDeleteConfirmDialog(index) {
-
+        // TODO
       },
       // get settings from db. only need locations and groupNames here.
       getLocationsAndGroupNames() {
         this.$http.get("/api/myDaily/getSettings", {}).then(data => {
-          const settings = data.body[0];
-          this.settings.locations = settings.locations.split('|');
-          this.settings.groupNames = settings.groupNames.split('|');
+          const settings = data.body[0] || [];
+          if (settings.length === 0) {
+            this.settings.locations = [];
+            this.settings.groupNames = [];
+          } else {
+            this.settings.locations = settings.locations.split('|');
+            this.settings.groupNames = settings.groupNames.split('|');
+          }
           this.getRecords();
         });
       },

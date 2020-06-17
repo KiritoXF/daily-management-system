@@ -124,7 +124,7 @@ var sqlMap = {
                     location,
                     groupName,
                     note
-                ) values ?
+                ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `,
         updateOvertimeRecord:`
             update 
