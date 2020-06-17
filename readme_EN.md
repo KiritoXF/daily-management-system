@@ -10,7 +10,9 @@ DMS is just a demo but the 'Daily' part could work well. You can also import and
 
 1. clone this repository.
 2. npm install
-3. run '/server/db/origininfo.sql' on Mysql. (default db name is 'dailySystem' and the port is 3306. Username and password both are root)
+
+~~3. run '/server/db/origininfo.sql' on Mysql. (default db name is 'dailySystem' and the port is 3306. Username and password both are root)~~
+
 4. npm run start
 5. http://localhost:8081
 
