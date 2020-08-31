@@ -127,8 +127,8 @@
             // 当前月份有多少天 (可能会有bug)
             getDayCount() {
                 const currentDate = new Date();
-                currentDate.setMonth(currentDate.getMonth() + 1);
                 currentDate.setDate(0);
+                currentDate.setMonth(currentDate.getMonth() + 1);
                 return currentDate.getDate();
             },
             // 月 的进度
