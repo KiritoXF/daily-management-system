@@ -10,6 +10,7 @@ import VueResource from 'vue-resource';
 import Chart from 'vue-chartjs';
 import EChart from 'echarts';
 import 'view-design/dist/styles/iview.css';
+import moment from 'moment';
 
 Vue.use(VueI18n)
 
@@ -31,6 +32,7 @@ Vue.use(iView);
 Vue.use(VueResource);
 Vue.use(Chart);
 Vue.use(EChart);
+Vue.use(moment);
 
 // Vue.use(VueI18n)
 
