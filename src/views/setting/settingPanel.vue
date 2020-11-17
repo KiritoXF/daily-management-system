@@ -6,7 +6,7 @@
         <Card style="width: 1000px;" :dis-hover="true">
             <p slot="title">{{ title }}</p>
             <Transfer :titles="[$t('setting.unselected'), $t('setting.selected')]" :data="allKeysCom"
-                :target-keys="selectedKeys" :list-style="{width: '400px'}"
+                :target-keys="selKeys" :list-style="{width: '400px'}"
                 :operations="[$t('setting.remove'), $t('setting.add')]" @on-change="handleChange"
                 @on-selected-change="handleSelectedChange">
                 <div :style="{float: 'right', margin: '5px'}">
@@ -50,7 +50,7 @@
                     return this.allKeys;
                 },
                 set(val) {
-                    this.allKeysData = val;
+                    this.allKeysData = val; // ????????
                 }
             }
         },

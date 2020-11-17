@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import {
   getToken
-} from '../utils/auth'
+} from '../js/utils/auth'
 
 Vue.use(VueI18n)
 

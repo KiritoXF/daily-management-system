@@ -1,7 +1,7 @@
 const routers = [{
         path: '/',
         meta: {
-            title: 'Main Page' 
+            title: 'Main Page'
         },
         component: (resolve) => require(['./views/index.vue'], resolve)
     },
@@ -83,6 +83,14 @@ const routers = [{
             title: 'Time Progress' // title 好像用不上？
         },
         component: (resolve) => require(['./views/time-progress.vue'], resolve)
+    },
+    {
+        path: '/canteen',
+        name: 'canteen',
+        meta: {
+            title: '食堂'
+        },
+        component: (resolve) => require(['./views/canteen/canteen.vue'], resolve)
     }
 ];
 export default routers;

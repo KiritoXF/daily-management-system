@@ -24,7 +24,7 @@
           </div>
           <Table border :columns="columns" :data="this.tableDatas" :loading="loading" ellipsis ref="infoTable"
             style="margin: 20px 0">
-            <template slot-scope="{ row, index }" slot="action">
+            <template slot-scope="{ index }" slot="action">
               <Button type="primary" size="small" @click="openEditInfoPage(index)">编辑</Button>
               <Button type="error" size="small" @click="openDeleteConfirmDialog(index)">删除</Button>
             </template>
@@ -55,9 +55,6 @@
         </TabPane>
         <TabPane label="工作饱和度">
           <div id="workSaturationChart" class="echart-div"></div>
-        </TabPane>
-        <TabPane label="文本编辑器">
-          <div id="editor"> iceEditor富文本编辑器test </div>
         </TabPane>
       </Tabs>
     </keep-alive>
@@ -117,7 +114,7 @@
           {
             title: "周数",
             key: "weeks",
-            maxWidth: 60
+            maxWidth: 65
           },
           {
             title: "工作内容",

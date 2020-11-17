@@ -88,9 +88,15 @@ var sqlMap = {
         `,
         getSettings: `
             select
+                userName,
+                team,
                 locations,
+                allLocations,
                 groupNames,
-                workCategories
+                allGroupNames,
+                workCategories,
+                allWorkCategories,
+                language
             from
                 setting
             where
